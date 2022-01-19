@@ -43,9 +43,7 @@ void computeCircle(double radius)
 	double area, radius;
 	cout << "Enter radius of circle :	";
 	cin >> radius;
-	area = radius * radius * PI;
-    cout << "The area of the circle is " << area << endl;
-}
+	area = radius * radius * PI;}
 
 void computeTriangle(double a, double b, double c)
 {
