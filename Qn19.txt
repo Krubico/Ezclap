@@ -1,0 +1,6 @@
+Which of the following string function returns the number of the characters
+contained by the string message?
+
+A. length(message);            B. message.len();
+
+C. message.length();           D. len(message);

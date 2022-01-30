@@ -1,0 +1,5 @@
+How to retrieve the second character of the string message?
+
+A. message.substr(1,1);            B. message[2];
+
+C. message.substr(2,1);            D. message.substr(1);
