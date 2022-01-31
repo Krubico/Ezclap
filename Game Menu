@@ -17,9 +17,6 @@ int main()
 
 void run(int x)
 {
-    ifstream inFile;
-    int i = 0,ID, highscore, max = -99999;
-   
     if (x == 1)
     {
         system("CLS");
@@ -39,27 +36,62 @@ void run(int x)
     {
         system("CLS");
         cout << "Highscore Menu!" << endl;
-        inFile.open("Text1.txt");
-        if (!inFile)
-            cout << "Error, cannot be opened";
-        else
+        ofstream foutid;
+        foutid.open("scorerid.txt", fstream::app);
+        if (foutid.is_open()) {
+            foutid << endl << 2;
+        }
+        foutid.close();
+
+        ofstream fouts;
+        fouts.open("scores.txt", fstream::app);
+        if (fouts.is_open()) {
+            fouts << endl << 15;
+        }
+        fouts.close();
+        int i = 0, m = 0, n = 0, ID, highscore, max = -99999;
+        int id[10000];
+        ifstream finid;
+        finid.open("scorerid.txt");
+        while (!finid.eof())
         {
-            cout << left << fixed << setprecision(2);
-            while (!inFile.eof())
-            {
-                inFile >> ID >> highscore;
-                if (inFile.fail()) break;
-                if (highscore > max)
-                    max = highscore;
-                cout << i + 1 << setw(15) << "." << max << endl;
-                i++;
+            finid >> id[n];
+            n++;
+        }
+        finid.close();
+        int scores[10000];
+        fstream fins;
+        fins.open("scores.txt");
+        while (!fins.eof())
+        {
+            fins >> scores[m];
+            m++;
+        }
+        fins.close();
+        int size = sizeof(id) / sizeof(id[0]);
+        int largest;
+        cout << left << fixed;
+        cout << setw(20) << "Position" << setw(20) << "ID" << "Top scores\n";
+        for (int a = 1; a <= 5; a++) {
+            //storing first array element as largest value
+            int x = 0;
+            largest = scores[0];
+            for (int i = 0; i < size; i++) {
+                if (largest < scores[i]) {
+                    largest = scores[i];
+                    x = i;
+                }
             }
+            cout << setw(20) << a << setw(20) << id[x] << largest << endl;
+            std::copy(id + (x + 1), id + (size - 1), id + x);
+            std::copy(scores + (x + 1), scores + (size - 1), scores + x);
         }
     }
     else if (x == 5)
     {
         system("CLS");
         cout << "Return To Lobby?" << endl;
+
     }
     else
     {
