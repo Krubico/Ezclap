@@ -1,0 +1,83 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+using namespace std;
+
+char displayMenu();
+
+int main()
+{
+    int x = ' ';
+    while (x != '6')
+    {
+        system("CLS");
+        x = displayMenu();
+    }
+}
+
+void run(int x)
+{
+    ifstream inFile;
+    int i = 0,ID, highscore, max = -99999;
+   
+    if (x == 1)
+    {
+        system("CLS");
+        cout << "Easy Mode. Are You Ready?" << endl;
+    }
+    else if (x == 2)
+    {
+        system("CLS");
+        cout << "Hard Mode. Are You Ready?" << endl;
+    }
+    else if (x == 3)
+    {
+        system("CLS");
+        cout << "Expert Mode. Are You Ready?" << endl;
+    }
+    else if (x == 4)
+    {
+        system("CLS");
+        cout << "Highscore Menu!" << endl;
+        inFile.open("Text1.txt");
+        if (!inFile)
+            cout << "Error, cannot be opened";
+        else
+        {
+            cout << left << fixed << setprecision(2);
+            while (!inFile.eof())
+            {
+                inFile >> ID >> highscore;
+                if (inFile.fail()) break;
+                if (highscore > max)
+                    max = highscore;
+                cout << i + 1 << setw(15) << "." << max << endl;
+                i++;
+            }
+        }
+    }
+    else if (x == 5)
+    {
+        system("CLS");
+        cout << "Return To Lobby?" << endl;
+    }
+    else
+    {
+        cout << "Incorrect Selection. Try Again." << endl;
+    }
+    system("pause");
+}
+
+char displayMenu()
+{
+    int x = ' ';
+    cout << "Select Your Difficulty" << endl;
+    cout << "1. Easy " << endl;
+    cout << "2. Hard " << endl;
+    cout << "3. Expert " << endl;
+    cout << "4. Highscores" << endl;
+    cout << "5. Return To Login" << endl;
+    cin >> x;
+    run(x);
+    return x;
+}
