@@ -282,35 +282,94 @@ Points logged
 int question_picker()
 {
 	srand(time(NULL));
+	const int maxTime = 300000;
 	int i = 0, qnNo;
 	int counter[20] = { 0 };
-	double sum = 0;
-	bool found;
+	int points;
+	int duration;
+	double sum;
+	bool found, finished = false;
+	char decisions[2] = { 'v','x' }, decision;
 	
-	
-	for (int j = 0; j < 5; j++)
+	while (finished == false)
 	{
-		found = false;
-		while (found == false)
+		sum = 0;
+		system("CLS");
+		int startTime = clock();
+		for (int j = 0; j < 5; j++)
 		{
-			qnNo = rand() % 20 + 1;
-			for (int k = 1; k <= 20; k++)
+			found = false;
+			while (found == false)
 			{
-				if (qnNo == k && counter[k - 1] == 0)
-				{ 
-					cout << "Qn" << j+1 << ")" << endl;
-					i = question(qnNo);
-					sum += i;
-					counter[k - 1]++;
-					found = true;
+				qnNo = rand() % 20 + 1;
+				for (int k = 1; k <= 20; k++)
+				{
+					if (qnNo == k && counter[k - 1] == 0)
+					{
+						cout << "Qn" << j + 1 << ")" << endl;
+						i = question(qnNo);
+						sum += i;
+						counter[k - 1]++;
+						found = true;
+					}
 				}
 			}
 		}
+		int endTime = clock();
+
+		duration = endTime - startTime;
+
+		if (sum == 5)
+		{
+			if (duration > maxTime)
+			{
+				points = 1;
+				cout << "You took more than 5 minutes, That's too Long!\n";
+				cout << "Total points: " << points << endl;
+			}
+			else if (duration > maxTime-600000 && duration <= maxTime)
+			{
+				points = 2;
+				cout << "You took 5 minutes or less, You need more Practice!\n";
+				cout << "Total points: " << points << endl;
+			}
+			else if (duration > maxTime-120000 && duration <= maxTime - 600000)
+			{
+				points = 3;
+				cout << "You took 4 minutes or less, Can be Better!\n";
+				cout << "Total points: " << points << endl;
+			}
+			else if (duration > maxTime-180000 && duration <= maxTime - 120000)
+			{
+				points = 4;
+				cout << "You took 3 minutes or less, Good Try!\n";
+				cout << "Total points: " << points << endl;
+			}
+			else if (duration > maxTime-240000 && duration <= maxTime - 180000)
+			{
+				points = 5;
+				cout << "You took 2 minutes or less, Excellent!\n";
+				cout << "Total points: " << points << endl;
+			}
+			else if (duration <= 60000)
+			{
+				points = 6;
+				cout << "You took a minute or less, WOW!\n";
+				cout << "Total points: " << points << endl;
+			}
+		}
+		else
+		{
+			cout << "You did not get Everything Right!\n";
+			cout << "Total points: " << 0 << endl;
+		}
+
+		cout << "If you would like to try again press v. However if you wish to end press x.";
+		cin >> decision;
+
+		if (decision == decisions[0]) finished = false;
+		else if (decision == decisions[1]) finished = true;
 	}
-
-	cout << "Total Score = " << sum << endl;
-
-	return sum;
 }
 
 int question(int qnNo)
