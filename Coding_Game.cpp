@@ -16,7 +16,7 @@ char displaygameMenu();
 void run(int a, char x);
 int question(int qnNo);
 void timer_Quiz(int r );
-void normal_Quiz(int x);
+void normal_Quiz();
 void Displayscores();
 
 int main() {
@@ -250,7 +250,7 @@ char displaygameMenu()
 	 else if (a == b[3]) checkOne = true;
          else
          {
-             cout << "invalid option. Please enter again.";
+             cout << "Invalid option. Please enter again.";
              cin >> a;
          }
     }	 
@@ -270,7 +270,7 @@ char displaygameMenu()
             else if (x == y[2]) checkTwo = true;
             else
             {
-                cout << "invalid option. Please enter again.";
+                cout << "Invalid option. Please enter again.";
                 cin >> x;
             }
         }
@@ -286,7 +286,7 @@ void run(int a, char x)
 	
     if (a == 1)
     {
-        
+        normal_Quiz();
     }
     else if (a == 2)
     {
@@ -295,25 +295,6 @@ void run(int a, char x)
 	else if (x == 'e') r = 20;
 	timer_Quiz(r);
     }
-    /*  system("CLS");
-        cout << "Easy Mode. Are You Ready?" << endl;
-	cout << "You have 5 minutes to answer 5 questions!"<<endl;
-	system("pause");
-        question_picker(x);
-	
-        system("CLS");
-        cout << "Hard Mode. Are You Ready?" << endl;
-	cout << "You have 5 minutes to answer 10 questions!"<<endl;
-	system("pause");
-        question_picker(x);
-    else if (x == 3)
-    {
-        system("CLS");
-        cout << "Expert Mode. Are You Ready?" << endl;
-	cout << "You have 5 minutes to answer 15 questions!"<<endl;
-	system("pause");
-        question_picker(x);
-    }*/
     else if (a == 3)
     {
         system("CLS");
@@ -333,6 +314,69 @@ void run(int a, char x)
 Return to Game Menu
 Points logged
 */
+void normal_Quiz()
+{
+	srand(time(NULL));
+	int i = 0, qnNo;
+	int counter[20] = { 0 };
+	double sum;
+	bool found, finished = false;
+	char decisions[2] = { 'v','x' }, decision;
+
+	while (finished == false)
+	{
+		sum = 0;
+		system("CLS");
+		for (int j = 0; j < 20; j++)
+		{
+			found = false;
+			while (found == false)
+			{
+				qnNo = rand() % 20 + 1;
+				for (int k = 1; k <= 20; k++)
+				{
+					if (qnNo == k && counter[k - 1] == 0)
+					{
+						cout << "Qn" << j + 1 << ")" << endl;
+						i = question(qnNo);
+						sum += i;
+						counter[k - 1]++;
+						found = true;
+					}
+				}
+			}
+		}
+		bool check = false;
+
+		while (check == false)
+		{
+			for (int u = 0; u <= 20; u++)
+			{
+				if (sum == u)
+				{
+					cout << "You got " << sum << " out of 20 Correct.\n";
+					check = true;
+				}
+			}
+		}
+		if (sum >= 15 && sum <= 20) cout << "Well done!\n";
+		else if (sum >= 10 && sum <=14) cout << "Good Try.Can be better!\n";
+		else if (sum >= 0 && sum <= 9) cout << "You need more Practice!\n";
+		
+		Displayscores();
+	
+		cout << "If you would like to try again press v. However if you wish to end press x.";
+		cin >> decision;
+
+		if (decision == decisions[0]) finished = false;
+		else if (decision == decisions[1])
+		{
+			finished = true;
+			displaygameMenu();
+		}
+	}
+}
+
 void timer_Quiz(int r)
 {
 	srand(time(NULL));
@@ -431,11 +475,11 @@ void timer_Quiz(int r)
 			cout << "You did not get Everything Right!\n";
 			cout << "Total points: " << 0 << endl;
 		}
+		
+		Displayscores();
                 
 		cout << "If you would like to try again press v. However if you wish to end press x.";
 		cin >> decision;
-		
-		Displayscores();
 		
 		if (decision == decisions[0]) finished = false;
 		else if (decision == decisions[1])
@@ -468,6 +512,7 @@ int question(int qnNo)
 	string qn;
 	char ans, cAns[20] = { 'b','d','b','a','c','a','a','c','b','d','c','c','b','b','c','b','b','b','c','a'};
 	int i=1;
+	bool check = false;
 	
 	if (qnNo == 1) inFile.open("Qn1.txt");
 	else if (qnNo == 2) inFile.open("Qn2.txt");
@@ -499,6 +544,18 @@ int question(int qnNo)
 	}
 	cout << endl << "Ans: ";
 	cin >> ans;
+	while (check == false)
+	{
+		if (ans == 'a') check = true;
+		else if (ans == 'b') check = true;
+		else if (ans == 'c') check = true;
+		else if (ans == 'd') check = true;
+		else
+		{
+			cout<<"Invalid option!. Please enter again."<<endl;
+			cin >> ans;
+		}
+	}
 	if (ans == cAns[qnNo-1])
 	{
 		cout << "\nCorrect Answer!" << endl;
