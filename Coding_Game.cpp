@@ -401,7 +401,7 @@ int question_picker(int x)
 	}
 	
 	
-int Displayscores()
+void Displayscores()
 {
 	string username;
 	fstream inFile;
