@@ -394,8 +394,15 @@ int question_picker(int x)
 		cin >> decision;
 		
 
+
+
+		if (decision == decisions[0]) finished = false;
+		else if (decision == decisions[1]) finished = true;
+	}
+	
+	
+	
 void Displayscores();
-int main()
 {
 	string username;
 	fstream inFile;
@@ -413,10 +420,6 @@ void Displayscores() {
 		inFile.close();
 	}
 }
-
-		if (decision == decisions[0]) finished = false;
-		else if (decision == decisions[1]) finished = true;
-	}
 
 int question(int qnNo)
 {
