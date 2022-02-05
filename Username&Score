@@ -1,19 +1,23 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-
+void Displayscores();
 int main()
 {
 	string username;
 	fstream inFile;
-	int points = 5;
-	username = "Kai Heng";
+	int points = 0;
+	Displayscores();
+	system("pause");
+	return 0;
+}
+void Displayscores() {
+	string username;
+	fstream inFile;
+	int points;
 	inFile.open("scores.txt", ios::app);
 	if (inFile.is_open()) {
 		inFile << username << "	" << points << endl;
 		inFile.close();
 	}
-	
-	system("pause");
-	return 0;
 }
