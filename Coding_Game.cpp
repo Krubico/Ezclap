@@ -392,7 +392,7 @@ int question_picker(int x)
                 
 		cout << "If you would like to try again press v. However if you wish to end press x.";
 		cin >> decision;
-		#include <iostream>
+		
 
 void Displayscores();
 int main()
