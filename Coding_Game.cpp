@@ -15,7 +15,7 @@ void display_leaderboard();
 char displaygameMenu();
 void run(int x);
 int question(int qnNo);
-int question_picker();
+int question_picker(int x);
 
 int main() {
     display_mainmenu();
@@ -223,7 +223,7 @@ void signup()
 
 char displaygameMenu()
 {
-    int x = ' ';
+    int x;
     cout << "Select Your Difficulty" << endl;
     cout << "1. Easy " << endl;
     cout << "2. Hard " << endl;
@@ -241,18 +241,26 @@ void run(int x)
     {
         system("CLS");
         cout << "Easy Mode. Are You Ready?" << endl;
-        question_picker();
+	cout << "You have 5 minutes to answer 5 questions!"<<endl;
+	system("pause");
+        question_picker(x);
         // Return to game menu
     }
     else if (x == 2)
     {
         system("CLS");
         cout << "Hard Mode. Are You Ready?" << endl;
+	cout << "You have 5 minutes to answer 10 questions!"<<endl;
+	system("pause");
+        question_picker(x);
     }
     else if (x == 3)
     {
         system("CLS");
         cout << "Expert Mode. Are You Ready?" << endl;
+	cout << "You have 5 minutes to answer 15 questions!"<<endl;
+	system("pause");
+        question_picker(x);
     }
     else if (x == 4)
     {
@@ -279,24 +287,30 @@ Return to Game Menu
 Points logged
 */
 
-int question_picker()
+int question_picker(int x)
 {
 	srand(time(NULL));
-	const int maxTime = 300000;
+	const int maxTime = 300000//5 minutes;
 	int i = 0, qnNo;
 	int counter[20] = { 0 };
 	int points;
 	int duration;
+	int r;
 	double sum;
 	bool found, finished = false;
 	char decisions[2] = { 'v','x' }, decision;
 	
+	if (x == 1) r = 5;
+	else if (x == 2) r = 10;
+	else if (x == 3) r = 15;
+	
 	while (finished == false)
 	{
 		sum = 0;
+		duration = 0;
 		system("CLS");
 		int startTime = clock();
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < r; j++)
 		{
 			found = false;
 			while (found == false)
@@ -319,41 +333,53 @@ int question_picker()
 
 		duration = endTime - startTime;
 
-		if (sum == 5)
+		if (sum == r)
 		{
-			if (duration > maxTime)
+			if ((duration > maxTime))
 			{
-				points = 1;
+				if (r == 5)points = 1;
+				else if (r == 10)points = 2;
+				else if (r == 15)points = 4;
 				cout << "You took more than 5 minutes, That's too Long!\n";
 				cout << "Total points: " << points << endl;
 			}
-			else if (duration > maxTime-600000 && duration <= maxTime)
+			else if (duration > 240000 && duration <= maxTime)
 			{
-				points = 2;
+				if (r == 5)points = 2;
+				else if (r == 10)points = 4;
+				else if (r == 15)points = 8;
 				cout << "You took 5 minutes or less, You need more Practice!\n";
 				cout << "Total points: " << points << endl;
 			}
-			else if (duration > maxTime-120000 && duration <= maxTime - 600000)
+			else if (duration > 180000 && duration <= 240000)
 			{
-				points = 3;
+				if (r == 5)points = 3;
+				else if (r == 10)points = 6;
+				else if (r == 15)points = 12;
 				cout << "You took 4 minutes or less, Can be Better!\n";
 				cout << "Total points: " << points << endl;
 			}
-			else if (duration > maxTime-180000 && duration <= maxTime - 120000)
+			else if (duration > 120000 && duration <= 180000)
 			{
-				points = 4;
+				if (r == 5)points = 4;
+				else if (r == 10)points = 8;
+				else if (r == 15)points = 16;
 				cout << "You took 3 minutes or less, Good Try!\n";
 				cout << "Total points: " << points << endl;
 			}
-			else if (duration > maxTime-240000 && duration <= maxTime - 180000)
+			else if (duration > 60000 && duration <= 120000)
 			{
-				points = 5;
+				if (r == 5)points = 5;
+				else if (r == 10)points = 10;
+				else if (r == 15)points = 20;
 				cout << "You took 2 minutes or less, Excellent!\n";
 				cout << "Total points: " << points << endl;
 			}
 			else if (duration <= 60000)
 			{
-				points = 6;
+				if (r == 5)points = 6;
+				else if (r == 10)points = 12;
+				else if (r == 15)points = 24;
 				cout << "You took a minute or less, WOW!\n";
 				cout << "Total points: " << points << endl;
 			}
@@ -370,7 +396,6 @@ int question_picker()
 		if (decision == decisions[0]) finished = false;
 		else if (decision == decisions[1]) finished = true;
 	}
-}
 
 int question(int qnNo)
 {
