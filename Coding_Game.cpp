@@ -13,9 +13,10 @@ void signin();
 void signup();
 void display_leaderboard();
 char displaygameMenu();
-void run(int x);
+void run(int a, char x);
 int question(int qnNo);
-int question_picker(int x);
+void timer_Quiz(int r );
+void normal_Quiz(int x);
 void Displayscores();
 
 int main() {
@@ -224,37 +225,87 @@ void signup()
 
 char displaygameMenu()
 {
-    int x;
-    cout << "Select Your Difficulty" << endl;
-    cout << "1. Easy " << endl;
-    cout << "2. Hard " << endl;
-    cout << "3. Expert " << endl;
-    cout << "4. Highscores" << endl;
-    cout << "5. Return To Login" << endl;
-    cin >> x;
-    run(x);
+    int b[4]={1, 2, 3, 4};
+    int a;
+    char y[3] = {'s', 'h', 'e'};
+    char x;
+    bool checkTwo = false;
+    bool checkOne = false;
+		 
+    cout << setw(25) << "Select Your Game mode" << endl;
+    cout << "------------------------------\n";
+    cout << "1. Normal Quiz" << endl;
+    cout << "2. Timer Quiz" << endl;// ans all qns correctly in 5 mins
+    cout << "------------------------------\n";
+    cout << setw(19) << "Options\n";
+    cout << "------------------------------\n";
+    cout << "3. Highscores" << endl;
+    cout << "4. Return To Login" << endl;
+    cin >> a;
+    while (checkOne == false)
+    {
+         if (a == b[0]) check = true;
+         else if (a == b[1]) checkOne = true;
+         else if (a == b[2]) checkOne = true;
+	 else if (a == b[3]) checkOne = true;
+         else
+         {
+             cout << "invalid option. Please enter again.";
+             cin >> a;
+         }
+    }	 
+		 
+    if(a == 2)
+    {
+        system("CLS");
+        cout << "Pick Difficulty\n";
+        cout << "s. simple\n";
+        cout << "h. Hard\n";
+        cout << "e. Expert\n";
+        cin >> x;
+        while (checkTwo == false)
+        {
+            if (x == y[0]) checkTwo = true;
+            else if (x == y[1]) checkTwo = true;
+            else if (x == y[2]) checkTwo = true;
+            else
+            {
+                cout << "invalid option. Please enter again.";
+                cin >> x;
+            }
+        }
+	run(a, x);    
+    }
+    else run(a);
     return x;
 }
 
-void run(int x)
+void run(int a, char x)
 {
-    if (x == 1)
+    int r;
+	
+    if (a == 1)
     {
-        system("CLS");
+        
+    }
+    else if (a == 2)
+    {
+        if (x == 's') r = 10;
+	else if (x == 'h') r = 15;
+	else if (x == 'e') r = 20;
+	timer_Quiz(r);
+    }
+    /*  system("CLS");
         cout << "Easy Mode. Are You Ready?" << endl;
 	cout << "You have 5 minutes to answer 5 questions!"<<endl;
 	system("pause");
         question_picker(x);
-        // Return to game menu
-    }
-    else if (x == 2)
-    {
+	
         system("CLS");
         cout << "Hard Mode. Are You Ready?" << endl;
 	cout << "You have 5 minutes to answer 10 questions!"<<endl;
 	system("pause");
         question_picker(x);
-    }
     else if (x == 3)
     {
         system("CLS");
@@ -262,24 +313,19 @@ void run(int x)
 	cout << "You have 5 minutes to answer 15 questions!"<<endl;
 	system("pause");
         question_picker(x);
-    }
-    else if (x == 4)
+    }*/
+    else if (a == 3)
     {
         system("CLS");
         cout << "Highscore Menu!" << endl;
         display_leaderboard();
     }
-    else if (x == 5)
+    else if (a == 4)
     {
         system("CLS");
         cout << "Return To Lobby?" << endl;
 
     }
-    else
-    {
-        cout << "Incorrect Selection. Try Again." << endl;
-    }
-    system("pause");
 }
 
 
@@ -287,23 +333,18 @@ void run(int x)
 Return to Game Menu
 Points logged
 */
-
-int question_picker(int x)
+void timer_Quiz(int r)
 {
 	srand(time(NULL));
-	const int maxTime = 300000//5 minutes;
+	const int maxTime = 300000;//5 minutes;
 	int i = 0, qnNo;
 	int counter[20] = { 0 };
 	int points;
 	int duration;
-	int r;
+	
 	double sum;
 	bool found, finished = false;
 	char decisions[2] = { 'v','x' }, decision;
-	
-	if (x == 1) r = 5;
-	else if (x == 2) r = 10;
-	else if (x == 3) r = 15;
 	
 	while (finished == false)
 	{
@@ -397,8 +438,13 @@ int question_picker(int x)
 		Displayscores();
 		
 		if (decision == decisions[0]) finished = false;
-		else if (decision == decisions[1]) finished = true;
+		else if (decision == decisions[1])
+		{
+		     finished = true;
+		     displaygameMenu();
+		}
 	}
+}
 	
 	
 void Displayscores()
