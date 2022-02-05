@@ -389,7 +389,7 @@ int question_picker(int x)
 			cout << "You did not get Everything Right!\n";
 			cout << "Total points: " << 0 << endl;
 		}
-
+                
 		cout << "If you would like to try again press v. However if you wish to end press x.";
 		cin >> decision;
 		#include <iostream>
@@ -401,8 +401,7 @@ int main()
 	fstream inFile;
 	int points = 0;
 	Displayscores();
-	system("pause");
-	return 0;
+	
 }
 void Displayscores() {
 	string username;
