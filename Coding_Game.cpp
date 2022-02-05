@@ -403,13 +403,12 @@ int question_picker(int x)
 	
 	
 void Displayscores();
-{
 	string username;
 	fstream inFile;
 	int points = 0;
 	Displayscores();
 	
-}
+
 void Displayscores() {
 	string username;
 	fstream inFile;
