@@ -16,6 +16,7 @@ char displaygameMenu();
 void run(int x);
 int question(int qnNo);
 int question_picker(int x);
+void Displayscores();
 
 int main() {
     display_mainmenu();
@@ -393,32 +394,27 @@ int question_picker(int x)
 		cout << "If you would like to try again press v. However if you wish to end press x.";
 		cin >> decision;
 		
-
-
-
+		Displayscores();
+		
 		if (decision == decisions[0]) finished = false;
 		else if (decision == decisions[1]) finished = true;
 	}
 	
 	
-	
-void Displayscores();
+int Displayscores()
+{
 	string username;
 	fstream inFile;
-	int points = 0;
-	Displayscores();
-	
-
-void Displayscores() {
-	string username;
-	fstream inFile;
-	int points;
+	int points = 5;
+	username = "Kai Heng";
 	inFile.open("scores.txt", ios::app);
-	if (inFile.is_open()) {
+	if (inFile.is_open()) 
+	{
 		inFile << username << "	" << points << endl;
 		inFile.close();
 	}
 }
+
 
 int question(int qnNo)
 {
