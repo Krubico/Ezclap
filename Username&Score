@@ -7,6 +7,7 @@ int main()
 	string username;
 	fstream inFile;
 	int points = 0;
+	username = "Kai Heng";
 	inFile.open("scores.txt", ios::app);
 	if (inFile.is_open()) {
 		inFile << username << "	" << points << endl;
