@@ -1,0 +1,28 @@
+void Displayscores(string username, int sum)
+{
+    //string username;
+    fstream inFile;
+    string line;
+    string data_username;
+    string data_score;
+    int score=0;
+
+   
+    inFile.open("Test.txt", ios::trunc);
+    if (inFile.is_open())
+    {
+        while (getline(inFile, line))
+        {
+            data_username = line.substr(0, line.find(' '));
+            data_score = line.substr(line.find(' ') + 1, line.length() - line.find(' ') - 1);
+            score = stoi(data_score);
+            if ((username == data_username) && (sum > score))
+            {
+                score = sum;
+                inFile << username << " " << score;
+            }
+            else inFile << username << " " << sum;
+            inFile.close();
+        }
+        
+    }
