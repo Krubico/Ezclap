@@ -6,6 +6,9 @@
 #include<string>
 #include <ctime>
 #include<windows.h>
+#include<map>
+#include<iterator>
+#include<algorithm>
 using namespace std;
 
 
@@ -26,10 +29,11 @@ void edit_leaderboard();
 void filter_byscore();
 int findLastIndex(string& str, char x);
 bool inRange(unsigned low, unsigned high, unsigned x);
+int display_leaderboard(int a);
 
 void edit_leaderboard() {}
 
-string current_username, leaderboard_filename = "leaderboard.txt";
+string current_username, leaderboard_filename = "normal.txt";
 
 int main() {
     display_mainmenu();
@@ -380,6 +384,7 @@ char displaygameMenu()
     cout << "------------------------------\n";
     cout << "3. Highscores" << endl;
     cout << "4. Return To Login" << endl;
+    cout << "Enter your choice: ";
     cin >> a;
     while (checkOne == false)
     {
@@ -397,9 +402,10 @@ char displaygameMenu()
     if (a == 2)
     {
         system("CLS");
+        cout << "------------------------------------------------------------\n";
         cout << setw(35) << "Pick Difficulty\n";
         cout << "------------------------------------------------------------\n";
-        cout << "s. simple (Complete 10 Questions in 5 Minutes)\n";
+        cout << "s. Simple (Complete 10 Questions in 5 Minutes)\n";
         cout << "h. Hard (Complete 15 Questions in 5 Minutes)\n";
         cout << "e. Expert(Complete 20 Questions in 5 Minutes)\n";
         cin >> x;
@@ -421,7 +427,7 @@ char displaygameMenu()
 
 void run(int a, char x)
 {
-    int r;
+    int r, choice;
 	
     if (a == 1)
     {
@@ -438,7 +444,13 @@ void run(int a, char x)
     {
         system("CLS");
         cout << "Highscore Menu!" << endl;
-        display_leaderboard();
+        cout << "1. Normal " << endl;
+        cout << "2. Easy " << endl;
+        cout << "3. Hard " << endl;
+        cout << "4. Expert " << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        display_leaderboard(choice);
     }
     else if (a == 4)
     {
@@ -638,7 +650,7 @@ void timer_Quiz(int r)
             cout << "Total points: " << 0 << endl;
         }
 
-        Displayscores(string username, int points);
+        //Displayscores(string username, int points);
 
         cout << "If you would like to try again press v. However if you wish to end press x.";
         cin >> decision;
@@ -669,7 +681,8 @@ void Displayscores()
 {
 	string username;
 	fstream inFile;
-	int points = 0;
+	int points = 5;
+	username = "Kai Heng";
 	inFile.open("scores.txt", ios::app);
 	if (inFile.is_open()) 
 	{
@@ -747,64 +760,71 @@ int question(int qnNo)
     return i;
 }
 
-// Write return to game menu
-//Combine both scoresid and scores files
-void display_leaderboard() {
-	// storing id and scores into text file
-	ofstream foutid;
-	foutid.open("scorerid.txt", fstream::app);
-	if (foutid.is_open()) {
-        foutid << endl << 2;
+
+
+bool cmp(pair<string, int>& c,
+	pair<string, int>& d)
+{
+	return c.second > d.second;
+}
+
+int display_leaderboard(int a) {
+	ifstream lbfile;
+	char x = ' ';
+	if (a == 1) {
+		lbfile.open("normal.txt");
 	}
-	foutid.close();
-
-    ofstream fouts;
-    fouts.open("scores.txt", fstream::app);
-    if (fouts.is_open()) {
-        fouts << endl << 15;
-    }
-
-
-    fouts.close();
-	// putting id into an array
-	int n = 0; // n is the id integer in the file
-	int id[30];
-
-	ifstream finid;
-	finid.open("scorerid.txt");
-	while (!finid.eof()) {
-		finid >> id[n];
-		n++;
-	}
-	finid.close();
-	// putting scores into an array
-	int m = 0; // m is the score integer in the file
-	int scores[30];
-
-	fstream fins;
-	fins.open("scores.txt");
-	while (!fins.eof()) {
-		fins >> scores[m];
-		m++;
-	}
-	fins.close();
-	// size of array
-	int size = sizeof(id) / sizeof(id[0]);
-	int largest;
-	cout << left << fixed;
-	cout << setw(20) << "Position" << setw(20) << "ID" << "Top scores\n";
-	for (int a = 1; a <= 5; a++) {
-		//storing first array element as largest value
-		int x = 0;
-		largest = scores[0];
-		for (int i = 0; i < size; i++) {
-			if (largest < scores[i]) {
-				largest = scores[i];
-				x = i;
-			}
+	if (a == 2) {
+		cin >> x;
+		if (x == 's') {
+			lbfile.open("simple timer.txt");
 		}
-		cout << setw(20) << a << setw(20) << id[x] << largest << endl;
-		std::copy(id + (x + 1), id + (size - 1), id + x);
-		std::copy(scores + (x + 1), scores + (size - 1), scores + x);
-    }
+		else if (x == 'h') {
+			lbfile.open("hard timer.txt");
+		}
+		else if (x == 'e') {
+			lbfile.open("expert timer.txt");
+		}
+	}
+	string username;
+	int score;
+	void sort_lb(map<string, int>&lb);
+	map<string, int> lb;
+	if (lbfile.is_open()) {
+		while (!lbfile.eof()) {
+			lbfile >> username >> score;
+			lb[username] = score;
+		}
+	}
+	lbfile.close();
+	sort_lb(lb);
+
+	system("pause");
+	return 0;
+}
+
+void sort_lb(map<string, int>& lb)
+{
+
+	// Declare vector of pairs
+	vector<pair<string, int> > A;
+	cout << left << fixed << setprecision(2);
+
+	// Copy key-value pair from Map
+	// to vector of pairs
+	for (auto& it : lb) {
+		A.push_back(it);
+	}
+
+	// Sort using comparator function
+	sort(A.begin(), A.end(), cmp);
+
+	A.resize(5);
+	lb = map<string, int>(A.begin(), A.end());
+	// Print the sorted value
+	for (auto& it : A) {
+
+		cout << setw(15) << it.first
+			<< it.second << endl;
+	}
 }
