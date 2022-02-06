@@ -495,10 +495,9 @@ void Displayscores()
 {
 	string username;
 	fstream inFile;
-	int points = 5;
-	username = "Kai Heng";
+	int points = 0;
 	inFile.open("scores.txt", ios::app);
-	if (inFile.is_open()) 
+	if (inFile.is_open())
 	{
 		inFile << username << "	" << points << endl;
 		inFile.close();
