@@ -24,13 +24,12 @@ int writescore(string filename, int points);
 int admin_menu();
 int admin_signin();
 int playersearch();
-void edit_leaderboard();
 void filter_byscore();
 int findLastIndex(string& str, char x);
 bool inRange(unsigned low, unsigned high, unsigned x);
 int display_leaderboard(int a);
+void ren(int a);
 
-void edit_leaderboard() {}
 
 string current_username;
 
@@ -74,18 +73,16 @@ int admin_menu()
     << "* WELCOME TO STUDENT PROFILE ORGANISER *" 
     << "\n" << "*****************************" << endl;
     cout << "1. Search for player name" << endl;
-    cout << "2. Create/edit player file" << endl;
-    cout << "3. Filter player scores" << endl;
-    cout << "4. Exit Program" << endl;
+    cout << "2. Filter player scores" << endl;
+    cout << "3. Exit Program" << endl;
     cout << "Enter option here: ";
     cin >> option;
 
     switch (option) 
     {
         break; case 1: playersearch();
-        break; case 2: edit_leaderboard();
-        break; case 3: filter_byscore();
-        break; case 4: return 0;
+        break; case 2: filter_byscore();
+        break; case 3: return 0;
     }
     return 0;
 }
@@ -581,10 +578,7 @@ void normal_Quiz()
             }
         }
 
-        if (decision == decisions[0])
-	{
-	     normal_quiz();
-	}
+        if (decision == decisions[0]) finished = false;
         else if (decision == decisions[1])
         {
             finished = true;
@@ -815,21 +809,18 @@ bool cmp(pair<string, int>& c, pair<string, int>& d)
 
 int display_leaderboard(int a) {
 	ifstream lbfile;
-	char x = ' ', choice;
+	char choice;
 	if (a == 1) {
 		lbfile.open("scores.txt");
 	}
-	if (a == 2) {
-		cin >> x;
-		if (x == 's') {
-			lbfile.open("simpletimer.txt");
+	else if (a == 2) {
+		lbfile.open("simpletimer.txt");
+	}
+	else if (a == 3) {
+		lbfile.open("hardtimer.txt");
 		}
-		else if (x == 'h') {
-			lbfile.open("hardtimer.txt");
-		}
-		else if (x == 'e') {
-			lbfile.open("experttimer.txt");
-		}
+	else if (a == 4) {
+		lbfile.open("experttimer.txt");
 	}
     cout << "Hall Of Fame (NORMAL)" << endl;
 	string username;
@@ -880,4 +871,6 @@ void sort_lb(map<string, int>& lb)
 			<< it.second << endl;
 	}
 }
+
+
 
