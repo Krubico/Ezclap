@@ -638,7 +638,7 @@ void timer_Quiz(int r)
             cout << "Total points: " << 0 << endl;
         }
 
-        //Displayscores(string username, int points);
+        Displayscores(string username, int points);
 
         cout << "If you would like to try again press v. However if you wish to end press x.";
         cin >> decision;
