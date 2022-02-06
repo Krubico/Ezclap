@@ -4,7 +4,9 @@
 using namespace std;
 
 char displayMenu();
-char difficultychoice();
+char selectdifficulty();
+char highscoredifficulty();
+char highscorechoice();
 
 int main()
 {
@@ -18,40 +20,144 @@ int main()
 
 void run(int x)
 {
-    int z = ' ';
+    int z = ' ', a = ' ';
     if (x == 1)
     {
         system("CLS");
-        cout << "Easy Mode. Are You Ready?" << endl;
+        cout << "Normal Quiz" << endl;
     }
     else if (x == 2)
     {
         system("CLS");
-        cout << "Hard Mode. Are You Ready?" << endl;
+        int y = ' ';
+        while (y != '6')
+        {
+            system("CLS");
+            y = selectdifficulty();
+        }
     }
     else if (x == 3)
     {
         system("CLS");
-        cout << "Expert Mode. Are You Ready?" << endl;
+        int a = ' ';
+        while (a != '6')
+        {
+            system("CLS");
+            a = highscorechoice();
+        }
     }
     else if (x == 4)
     {
-        system("CLS");
-        int z = ' ';
-        while (z != '5')
-        {
-            system("CLS");
-            z = difficultychoice();
-        }
-    }
-    else if (x == 5)
-    {
-        system("CLS");
-        cout << "Logout?" << endl;
+        cout << "Return To Login " << endl;
     }
     else
     {
         cout << "Incorrect Selection. Try Again." << endl;
+    }
+    system("pause");
+}
+
+void rin(int y)
+{
+    int x = ' ';
+    if (y == 1)
+    {
+        system("CLS");
+        cout << "Easy" << endl;
+    }
+    else if (y == 2)
+    {
+        system("CLS");
+        cout << "Hard" << endl;
+    }
+    else if (y == 3)
+    {
+        system("CLS");
+        cout << "Expert" << endl;
+    }
+    else if (y == 4)
+    {
+        system("CLS");
+        int x = ' ';
+        while (x != '6')
+        {
+            system("CLS");
+            x = displayMenu();
+        }
+    }
+    else
+    {
+        cout << "Incorrect Input. Try Again." << endl;
+    }
+    system("pause");
+}
+
+void ren(int a)
+{
+    if (a == 1)
+    {
+        int n = 0;
+        int m = 0;
+        int scores[100000];
+
+        system("CLS");
+        // storing id and scores into text file
+        ofstream fouts;
+        fouts.open("ss.txt", fstream::app);
+        if (fouts.is_open()) {
+            fouts << endl << 15;
+        }
+        fouts.close();
+
+        fstream fins;
+        fins.open("ss.txt");
+        while (!fins.eof()) {
+            fins >> scores[m];
+            m++;
+        }
+        fins.close();
+        // size of array
+        int size = sizeof(scores) / sizeof(scores[0]);
+        int largest;
+        cout << left << fixed;
+        cout << setw(20) << "Position" << "Highscore\n";
+        for (int a = 1; a <= 5; a++) {
+            //storing first array element as largest value
+            int x = 0;
+            largest = scores[0];
+            for (int i = 0; i < size; i++) {
+                if (largest < scores[i]) {
+                    largest = scores[i];
+                    x = i;
+                }
+            }
+            cout << setw(20) << a << largest << endl;
+            std::copy(scores + (x + 1), scores + (size - 1), scores + x);
+        }
+    }
+    else if (a == 2)
+    {
+        system("CLS");
+        int z = ' ';
+        while (z != '6')
+        {
+            system("CLS");
+            z = highscoredifficulty();
+        }
+    }
+    else if (a == 3)
+    {
+        system("CLS");
+        int x = ' ';
+        while (x != '6')
+        {
+            system("CLS");
+            x = displayMenu();
+        }
+    }
+    else
+    {
+        cout << "Incorrect Input. Try Again" << endl;
     }
     system("pause");
 }
@@ -62,157 +168,181 @@ void ran(int z)
     int m = 0;
     int scores[100000];
 
-        if (z == 1)
-        {
-            system("CLS");
-            // storing id and scores into text file
-            ofstream fouts;
-            fouts.open("ss.txt", fstream::app);
-            if (fouts.is_open()) {
-                fouts << endl << 15;
-            }
-            fouts.close();
+    if (z == 1)
+    {
+        system("CLS");
+        // storing id and scores into text file
+        ofstream fouts;
+        fouts.open("ss.txt", fstream::app);
+        if (fouts.is_open()) {
+            fouts << endl << 15;
+        }
+        fouts.close();
 
-            fstream fins;
-            fins.open("ss.txt");
-            while (!fins.eof()) {
-                fins >> scores[m];
-                m++;
-            }
-            fins.close();
-            // size of array
-            int size = sizeof(scores) / sizeof(scores[0]);
-            int largest;
-            cout << left << fixed;
-            cout << setw(20) << "Position" << "Highscore\n";
-            for (int a = 1; a <= 5; a++) {
-                //storing first array element as largest value
-                int x = 0;
-                largest = scores[0];
-                for (int i = 0; i < size; i++) {
-                    if (largest < scores[i]) {
-                        largest = scores[i];
-                        x = i;
-                    }
+        fstream fins;
+        fins.open("ss.txt");
+        while (!fins.eof()) {
+            fins >> scores[m];
+            m++;
+        }
+        fins.close();
+        // size of array
+        int size = sizeof(scores) / sizeof(scores[0]);
+        int largest;
+        cout << left << fixed;
+        cout << setw(20) << "Position" << "Highscore\n";
+        for (int a = 1; a <= 5; a++) {
+            //storing first array element as largest value
+            int x = 0;
+            largest = scores[0];
+            for (int i = 0; i < size; i++) {
+                if (largest < scores[i]) {
+                    largest = scores[i];
+                    x = i;
                 }
-                cout << setw(20) << a << largest << endl;
-                std::copy(scores + (x + 1), scores + (size - 1), scores + x);
             }
+            cout << setw(20) << a << largest << endl;
+            std::copy(scores + (x + 1), scores + (size - 1), scores + x);
         }
-        else if (z == 2)
-        {
-            system("CLS");
-            // storing id and scores into text file
-            ofstream fouts;
-            fouts.open("ss.txt", fstream::app);
-            if (fouts.is_open()) {
-                fouts << endl << 15;
-            }
-            fouts.close();
-
-            fstream fins;
-            fins.open("ss.txt");
-            while (!fins.eof()) {
-                fins >> scores[m];
-                m++;
-            }
-            fins.close();
-            // size of array
-            int size = sizeof(scores) / sizeof(scores[0]);
-            int largest;
-            cout << left << fixed;
-            cout << setw(20) << "Position" << "Highscore\n";
-            for (int a = 1; a <= 5; a++) {
-                //storing first array element as largest value
-                int x = 0;
-                largest = scores[0];
-                for (int i = 0; i < size; i++) {
-                    if (largest < scores[i]) {
-                        largest = scores[i];
-                        x = i;
-                    }
-                }
-                cout << setw(20) << a << largest << endl;
-                std::copy(scores + (x + 1), scores + (size - 1), scores + x);
-            }
-        }
-        else if (z == 3)
-        {
-            system("CLS");
-            // storing id and scores into text file
-            ofstream fouts;
-            fouts.open("ss.txt", fstream::app);
-            if (fouts.is_open()) {
-                fouts << endl << 15;
-            }
-            fouts.close();
-
-            fstream fins;
-            fins.open("ss.txt");
-            while (!fins.eof()) {
-                fins >> scores[m];
-                m++;
-            }
-            fins.close();
-            // size of array
-            int size = sizeof(scores) / sizeof(scores[0]);
-            int largest;
-            cout << left << fixed;
-            cout << setw(20) << "Position" << "Highscore\n";
-            for (int a = 1; a <= 5; a++) {
-                //storing first array element as largest value
-                int x = 0;
-                largest = scores[0];
-                for (int i = 0; i < size; i++) {
-                    if (largest < scores[i]) {
-                        largest = scores[i];
-                        x = i;
-                    }
-                }
-                cout << setw(20) << a << largest << endl;
-                std::copy(scores + (x + 1), scores + (size - 1), scores + x);
-            }
-        }
-        else if (z == 4)
-        {
-        cout << "Return?" << endl;
-        int x = ' ';
-        while (x != '6')
-        {
-            system("CLS");
-            x = displayMenu();
-        }
-        }
-        else
-        {
-            cout << "Incorrect Selection. Try Again." << endl;
-        }
-        system("pause");
     }
+    else if (z == 2)
+    {
+        system("CLS");
+        // storing id and scores into text file
+        ofstream fouts;
+        fouts.open("ss.txt", fstream::app);
+        if (fouts.is_open()) {
+            fouts << endl << 15;
+        }
+        fouts.close();
+
+        fstream fins;
+        fins.open("ss.txt");
+        while (!fins.eof()) {
+            fins >> scores[m];
+            m++;
+        }
+        fins.close();
+        // size of array
+        int size = sizeof(scores) / sizeof(scores[0]);
+        int largest;
+        cout << left << fixed;
+        cout << setw(20) << "Position" << "Highscore\n";
+        for (int a = 1; a <= 5; a++) {
+            //storing first array element as largest value
+            int x = 0;
+            largest = scores[0];
+            for (int i = 0; i < size; i++) {
+                if (largest < scores[i]) {
+                    largest = scores[i];
+                    x = i;
+                }
+            }
+            cout << setw(20) << a << largest << endl;
+            std::copy(scores + (x + 1), scores + (size - 1), scores + x);
+        }
+    }
+    else if (z == 3)
+    {
+        system("CLS");
+        // storing id and scores into text file
+        ofstream fouts;
+        fouts.open("ss.txt", fstream::app);
+        if (fouts.is_open()) {
+            fouts << endl << 15;
+        }
+        fouts.close();
+
+        fstream fins;
+        fins.open("ss.txt");
+        while (!fins.eof()) {
+            fins >> scores[m];
+            m++;
+        }
+        fins.close();
+        // size of array
+        int size = sizeof(scores) / sizeof(scores[0]);
+        int largest;
+        cout << left << fixed;
+        cout << setw(20) << "Position" << "Highscore\n";
+        for (int a = 1; a <= 5; a++) {
+            //storing first array element as largest value
+            int x = 0;
+            largest = scores[0];
+            for (int i = 0; i < size; i++) {
+                if (largest < scores[i]) {
+                    largest = scores[i];
+                    x = i;
+                }
+            }
+            cout << setw(20) << a << largest << endl;
+            std::copy(scores + (x + 1), scores + (size - 1), scores + x);
+        }
+    }
+    else if (z == 4)
+    {
+        system("CLS");
+        int a = ' ';
+        while (a != '6')
+        {
+            system("CLS");
+            a = highscorechoice();
+        }
+    }
+    else
+    {
+        cout << "Incorrect Selection. Try Again." << endl;
+    }
+    system("pause");
+}
 
 char displayMenu()
 {
     int x = ' ';
-    cout << "Select Your Difficulty" << endl;
-    cout << "1. Easy " << endl;
-    cout << "2. Hard " << endl;
-    cout << "3. Expert " << endl;
-    cout << "4. Highscores" << endl;
-    cout << "5. Return To Login" << endl;
+    cout << "Select Your Option" << endl;
+    cout << "1. Normal Quiz " << endl;
+    cout << "2. Timer Quiz " << endl;
+    cout << "3. Highscores" << endl;
+    cout << "4. Return To Login" << endl;
     cin >> x;
     run(x);
     return x;
 }
 
-char difficultychoice()
+char selectdifficulty()
+{
+    int y = ' ';
+    cout << "Select Your Difficulty" << endl;
+    cout << "1. Easy " << endl;
+    cout << "2. Hard " << endl;
+    cout << "3. Expert " << endl;
+    cout << "4. Return " << endl;
+    cin >> y;
+    rin(y);
+    return y;
+}
+
+char highscoredifficulty()
 {
     int z = ' ';
-    cout << "Select Highscore" << endl;
+    cout << "Select Difficulty Highscore" << endl;
     cout << "1. Easy " << endl;
     cout << "2. Hard " << endl;
     cout << "3. Expert" << endl;
-    cout << "4. Return? " << endl;
+    cout << "4. Return " << endl;
     cin >> z;
     ran(z);
     return z;
+}
+
+char highscorechoice()
+{
+    int a = ' ';
+    cout << "Select Game Mode Highscore" << endl;
+    cout << "1. Normal Quiz" << endl;
+    cout << "2. Timer Quiz" << endl;
+    cout << "3. Return" << endl;
+    cin >> a;
+    ren(a);
+    return a;
 }
