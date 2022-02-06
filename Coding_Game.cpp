@@ -228,10 +228,11 @@ char displaygameMenu()
     int b[4]={1, 2, 3, 4};
     int a;
     char y[3] = {'s', 'h', 'e'};
-    char x;
+    char x=' ';
     bool checkTwo = false;
     bool checkOne = false;
 		 
+    system("CLS");
     cout << setw(25) << "Select Your Game mode" << endl;
     cout << "------------------------------\n";
     cout << "1. Normal Quiz" << endl;
@@ -244,7 +245,7 @@ char displaygameMenu()
     cin >> a;
     while (checkOne == false)
     {
-         if (a == b[0]) check = true;
+         if (a == b[0]) checkOne = true;
          else if (a == b[1]) checkOne = true;
          else if (a == b[2]) checkOne = true;
 	 else if (a == b[3]) checkOne = true;
@@ -255,13 +256,14 @@ char displaygameMenu()
          }
     }	 
 		 
-    if(a == 2)
+    if (a == 2)
     {
         system("CLS");
-        cout << "Pick Difficulty\n";
-        cout << "s. simple\n";
-        cout << "h. Hard\n";
-        cout << "e. Expert\n";
+        cout << setw(35) << "Pick Difficulty\n";
+        cout << "------------------------------------------------------------\n";
+        cout << "s. simple (Complete 10 Questions in 5 Minutes)\n";
+        cout << "h. Hard (Complete 15 Questions in 5 Minutes)\n";
+        cout << "e. Expert(Complete 20 Questions in 5 Minutes)\n";
         cin >> x;
         while (checkTwo == false)
         {
@@ -274,10 +276,9 @@ char displaygameMenu()
                 cin >> x;
             }
         }
-	run(a, x);    
     }
-    else run(a);
-    return x;
+
+    run(a, x);
 }
 
 void run(int a, char x)
@@ -316,178 +317,213 @@ Points logged
 */
 void normal_Quiz()
 {
-	srand(time(NULL));
-	int i = 0, qnNo;
-	int counter[20] = { 0 };
-	double sum;
-	bool found, finished = false;
-	char decisions[2] = { 'v','x' }, decision;
+    srand(time(NULL));
+    int i = 0, qnNo;
+    int counter[20] = { 0 };
+    double sum;
+    bool found, finished = false;
+    char decisions[2] = { 'v','x' }, decision;
+    string username;
 
-	while (finished == false)
-	{
-		sum = 0;
-		system("CLS");
-		for (int j = 0; j < 20; j++)
-		{
-			found = false;
-			while (found == false)
-			{
-				qnNo = rand() % 20 + 1;
-				for (int k = 1; k <= 20; k++)
-				{
-					if (qnNo == k && counter[k - 1] == 0)
-					{
-						cout << "Qn" << j + 1 << ")" << endl;
-						i = question(qnNo);
-						sum += i;
-						counter[k - 1]++;
-						found = true;
-					}
-				}
-			}
-		}
-		bool check = false;
+    while (finished == false)
+    {
+        sum = 0;
+        system("CLS");
+        for (int j = 0; j < 20; j++)
+        {
+            found = false;
+            while (found == false)
+            {
+                qnNo = rand() % 20 + 1;
+                for (int k = 1; k <= 20; k++)
+                {
+                    if (qnNo == k && counter[k - 1] == 0)
+                    {
+                        cout << "Qn" << j + 1 << ")" << endl;
+                        i = question(qnNo);
+                        sum += i;
+                        counter[k - 1]++;
+                        found = true;
+                    }
+                }
+            }
+        }
+        
+        bool check = false;
+        while (check == false)
+        {
+            for (int u = 0; u <= 20; u++)
+            {
+                if (sum == u)
+                {
+                    cout << "You got " << sum << " out of 20 Correct.\n";
+                    check = true;
+                }
+            }
+        }
+        if (sum >= 15 && sum <= 20) cout << "Well done!\n";
+        else if (sum >= 10 && sum <= 14) cout << "Good Try.Can be better!\n";
+        else if (sum >= 0 && sum <= 9) cout << "You need more Practice!\n";
 
-		while (check == false)
-		{
-			for (int u = 0; u <= 20; u++)
-			{
-				if (sum == u)
-				{
-					cout << "You got " << sum << " out of 20 Correct.\n";
-					check = true;
-				}
-			}
-		}
-		if (sum >= 15 && sum <= 20) cout << "Well done!\n";
-		else if (sum >= 10 && sum <=14) cout << "Good Try.Can be better!\n";
-		else if (sum >= 0 && sum <= 9) cout << "You need more Practice!\n";
-		
-		Displayscores();
-	
-		cout << "If you would like to try again press v. However if you wish to end press x.";
-		cin >> decision;
+        //Displayscores(username, sum);
 
-		if (decision == decisions[0]) finished = false;
-		else if (decision == decisions[1])
-		{
-			finished = true;
-			displaygameMenu();
-		}
-	}
+        cout << "If you would like to try again press v. However if you wish to end press x.";
+        cin >> decision;
+
+        bool checkQ = false;
+        while (checkQ == false)
+        {
+            if (decision == decisions[0]) checkQ = true;
+            else if (decision == decisions[1]) checkQ = true;
+            else
+            {
+                cout << "Invalid option!. Please enter again." << endl;
+                cin >> decision;
+            }
+        }
+
+        if (decision == decisions[0]) finished = false;
+        else if (decision == decisions[1])
+        {
+            finished = true;
+            displaygameMenu();
+        }
+    }
 }
-
 void timer_Quiz(int r)
 {
-	srand(time(NULL));
-	const int maxTime = 300000;//5 minutes;
-	int i = 0, qnNo;
-	int counter[20] = { 0 };
-	int points;
-	int duration;
-	
-	double sum;
-	bool found, finished = false;
-	char decisions[2] = { 'v','x' }, decision;
-	
-	while (finished == false)
-	{
-		sum = 0;
-		duration = 0;
-		system("CLS");
-		int startTime = clock();
-		for (int j = 0; j < r; j++)
-		{
-			found = false;
-			while (found == false)
-			{
-				qnNo = rand() % 20 + 1;
-				for (int k = 1; k <= 20; k++)
-				{
-					if (qnNo == k && counter[k - 1] == 0)
-					{
-						cout << "Qn" << j + 1 << ")" << endl;
-						i = question(qnNo);
-						sum += i;
-						counter[k - 1]++;
-						found = true;
-					}
-				}
-			}
-		}
-		int endTime = clock();
+    srand(time(NULL));
+    const int maxTime = 300000;//5 minutes;
+    int i = 0, qnNo;
+    int counter[20] = { 0 };
+    int points;
+    int duration;
+    double sum;
+    bool found, finished = false;
+    char decisions[2] = { 'v','x' }, decision;
+    
 
-		duration = endTime - startTime;
+    while (finished == false)
+    {
+        system("CLS");
+        cout << "Game will start in 5 Seconds. Get Ready!\n" << endl;
+        for (int sec = 5; sec > 0; sec--)
+        {
+            cout << setw(20) << sec;
+            cout.flush();
+            Sleep(1000);
+            cout << '\r';
+        }
+        cout << setw(20) << "BEGIN!";
+        Sleep(1000);
+        system("CLS");
+        sum = 0;
+        duration = 0;
+        int startTime = clock();
+        for (int j = 0; j < r; j++)
+        {
+            found = false;
+            while (found == false)
+            {
+                qnNo = rand() % 20 + 1;
+                for (int k = 1; k <= 20; k++)
+                {
+                    if (qnNo == k && counter[k - 1] == 0)
+                    {
+                        cout << "Qn" << j + 1 << ")" << endl;
+                        i = question(qnNo);
+                        sum += i;
+                        counter[k - 1]++;
+                        found = true;
+                    }
+                }
+            }
+        }
+        int endTime = clock();
 
-		if (sum == r)
-		{
-			if ((duration > maxTime))
-			{
-				if (r == 5)points = 1;
-				else if (r == 10)points = 2;
-				else if (r == 15)points = 4;
-				cout << "You took more than 5 minutes, That's too Long!\n";
-				cout << "Total points: " << points << endl;
-			}
-			else if (duration > 240000 && duration <= maxTime)
-			{
-				if (r == 5)points = 2;
-				else if (r == 10)points = 4;
-				else if (r == 15)points = 8;
-				cout << "You took 5 minutes or less, You need more Practice!\n";
-				cout << "Total points: " << points << endl;
-			}
-			else if (duration > 180000 && duration <= 240000)
-			{
-				if (r == 5)points = 3;
-				else if (r == 10)points = 6;
-				else if (r == 15)points = 12;
-				cout << "You took 4 minutes or less, Can be Better!\n";
-				cout << "Total points: " << points << endl;
-			}
-			else if (duration > 120000 && duration <= 180000)
-			{
-				if (r == 5)points = 4;
-				else if (r == 10)points = 8;
-				else if (r == 15)points = 16;
-				cout << "You took 3 minutes or less, Good Try!\n";
-				cout << "Total points: " << points << endl;
-			}
-			else if (duration > 60000 && duration <= 120000)
-			{
-				if (r == 5)points = 5;
-				else if (r == 10)points = 10;
-				else if (r == 15)points = 20;
-				cout << "You took 2 minutes or less, Excellent!\n";
-				cout << "Total points: " << points << endl;
-			}
-			else if (duration <= 60000)
-			{
-				if (r == 5)points = 6;
-				else if (r == 10)points = 12;
-				else if (r == 15)points = 24;
-				cout << "You took a minute or less, WOW!\n";
-				cout << "Total points: " << points << endl;
-			}
-		}
-		else
-		{
-			cout << "You did not get Everything Right!\n";
-			cout << "Total points: " << 0 << endl;
-		}
-		
-		Displayscores();
-                
-		cout << "If you would like to try again press v. However if you wish to end press x.";
-		cin >> decision;
-		
-		if (decision == decisions[0]) finished = false;
-		else if (decision == decisions[1])
-		{
-		     finished = true;
-		     displaygameMenu();
-		}
-	}
+        duration = endTime - startTime;
+
+        if (sum == r)
+        {
+            if ((duration > maxTime))
+            {
+                if (r == 10)points = 1;
+                else if (r == 15)points = 2;
+                else if (r == 20)points = 4;
+                cout << "You took more than 5 minutes, That's too Long!\n";
+                cout << "Total points: " << points << endl;
+            }
+            else if (duration > 240000 && duration <= maxTime)
+            {
+                if (r == 10)points = 2;
+                else if (r == 15)points = 4;
+                else if (r == 20)points = 8;
+                cout << "You took 5 minutes or less, You need more Practice!\n";
+                cout << "Total points: " << points << endl;
+            }
+            else if (duration > 180000 && duration <= 240000)
+            {
+                if (r == 10)points = 3;
+                else if (r == 15)points = 6;
+                else if (r == 20)points = 12;
+                cout << "You took 4 minutes or less, Can be Better!\n";
+                cout << "Total points: " << points << endl;
+            }
+            else if (duration > 120000 && duration <= 180000)
+            {
+                if (r == 10)points = 4;
+                else if (r == 15)points = 8;
+                else if (r == 20)points = 16;
+                cout << "You took 3 minutes or less, Good Try!\n";
+                cout << "Total points: " << points << endl;
+            }
+            else if (duration > 60000 && duration <= 120000)
+            {
+                if (r == 10)points = 5;
+                else if (r == 15)points = 10;
+                else if (r == 20)points = 20;
+                cout << "You took 2 minutes or less, Excellent!\n";
+                cout << "Total points: " << points << endl;
+            }
+            else if (duration <= 60000)
+            {
+                if (r == 10)points = 6;
+                else if (r == 15)points = 12;
+                else if (r == 20)points = 24;
+                cout << "You took a minute or less, WOW!\n";
+                cout << "Total points: " << points << endl;
+            }
+        }
+        else
+        {
+            cout << "You did not get Everything Right!\n";
+            cout << "Total points: " << 0 << endl;
+        }
+
+        //Displayscores(string username, int points);
+
+        cout << "If you would like to try again press v. However if you wish to end press x.";
+        cin >> decision;
+
+        bool check = false;
+        while (check == false)
+        {
+            if (decision == decisions[0]) check = true;
+            else if (decision == decisions[1]) check = true;
+            else
+            {
+                cout << "Invalid option!. Please enter again." << endl;
+                cin >> decision;
+            }
+        }
+
+        if (decision == decisions[0]) finished = false;
+        else if (decision == decisions[1])
+        {
+            finished = true;
+            displaygameMenu();
+        }
+    }
 }
 	
 	
@@ -495,9 +531,10 @@ void Displayscores()
 {
 	string username;
 	fstream inFile;
-	int points = 0;
+	int points = 5;
+	username = "Kai Heng";
 	inFile.open("scores.txt", ios::app);
-	if (inFile.is_open())
+	if (inFile.is_open()) 
 	{
 		inFile << username << "	" << points << endl;
 		inFile.close();
@@ -507,72 +544,70 @@ void Displayscores()
 
 int question(int qnNo)
 {
-	fstream inFile;
-	string qn;
-	char ans, cAns[20] = { 'b','d','b','a','c','a','a','c','b','d','c','c','b','b','c','b','b','b','c','a'};
-	int i=1;
-	bool check = false;
-	
-	if (qnNo == 1) inFile.open("Qn1.txt");
-	else if (qnNo == 2) inFile.open("Qn2.txt");
-	else if (qnNo == 3) inFile.open("Qn3.txt");
-	else if (qnNo == 4) inFile.open("Qn4.txt");
-	else if (qnNo == 5) inFile.open("Qn5.txt");
-	else if (qnNo == 6) inFile.open("Qn6.txt");
-	else if (qnNo == 7) inFile.open("Qn7.txt");
-	else if (qnNo == 8) inFile.open("Qn8.txt");
-	else if (qnNo == 9) inFile.open("Qn9.txt");
-	else if (qnNo == 10) inFile.open("Qn10.txt");
-	else if (qnNo == 11) inFile.open("Qn11.txt");
-	else if (qnNo == 12) inFile.open("Qn12.txt");
-	else if (qnNo == 13) inFile.open("Qn13.txt");
-	else if (qnNo == 14) inFile.open("Qn14.txt");
-	else if (qnNo == 15) inFile.open("Qn15.txt");
-	else if (qnNo == 16) inFile.open("Qn16.txt");
-	else if (qnNo == 17) inFile.open("Qn17.txt");
-	else if (qnNo == 18) inFile.open("Qn18.txt");
-	else if (qnNo == 19) inFile.open("Qn19.txt");
-	else if (qnNo == 20) inFile.open("Qn20.txt");
+    fstream inFile;
+    string qn;
+    char ans, cAns[20] = { 'b','d','b','a','c','a','a','c','b','d','c','c','b','b','c','b','b','b','c','a' };
+    int i = 1;
+    bool check = false;
 
-	while (!inFile.eof())
-	{
+    if (qnNo == 1) inFile.open("Qn1.txt");
+    else if (qnNo == 2) inFile.open("Qn2.txt");
+    else if (qnNo == 3) inFile.open("Qn3.txt");
+    else if (qnNo == 4) inFile.open("Qn4.txt");
+    else if (qnNo == 5) inFile.open("Qn5.txt");
+    else if (qnNo == 6) inFile.open("Qn6.txt");
+    else if (qnNo == 7) inFile.open("Qn7.txt");
+    else if (qnNo == 8) inFile.open("Qn8.txt");
+    else if (qnNo == 9) inFile.open("Qn9.txt");
+    else if (qnNo == 10) inFile.open("Qn10.txt");
+    else if (qnNo == 11) inFile.open("Qn11.txt");
+    else if (qnNo == 12) inFile.open("Qn12.txt");
+    else if (qnNo == 13) inFile.open("Qn13.txt");
+    else if (qnNo == 14) inFile.open("Qn14.txt");
+    else if (qnNo == 15) inFile.open("Qn15.txt");
+    else if (qnNo == 16) inFile.open("Qn16.txt");
+    else if (qnNo == 17) inFile.open("Qn17.txt");
+    else if (qnNo == 18) inFile.open("Qn18.txt");
+    else if (qnNo == 19) inFile.open("Qn19.txt");
+    else if (qnNo == 20) inFile.open("Qn20.txt");
 
-		getline(inFile, qn);
-		cout << qn << endl;
+    while (!inFile.eof())
+    {
 
-	}
-	cout << endl << "Ans: ";
-	cin >> ans;
-	while (check == false)
-	{
-		if (ans == 'a') check = true;
-		else if (ans == 'b') check = true;
-		else if (ans == 'c') check = true;
-		else if (ans == 'd') check = true;
-		else
-		{
-			cout<<"Invalid option!. Please enter again."<<endl;
-			cin >> ans;
-		}
-	}
-	if (ans == cAns[qnNo-1])
-	{
-		cout << "\nCorrect Answer!" << endl;
-		system("pause");
-		i=1;
-	}
-	else
-	{
-		cout << "\nSorry wrong Answer!" << endl;
-		system("pause");
-		i=-1;
-	}
-	inFile.close();
-	
-	system("CLS");
-    //Open scorers file (username  score)
-    //Update file if user is new 
-	return i;
+        getline(inFile, qn);
+        cout << qn << endl;
+
+    }
+    cout << endl << "Ans: ";
+    cin >> ans;
+    while (check == false)
+    {
+        if (ans == 'a') check = true;
+        else if (ans == 'b') check = true;
+        else if (ans == 'c') check = true;
+        else if (ans == 'd') check = true;
+        else
+        {
+            cout << "Invalid option!. Please enter again." << endl;
+            cin >> ans;
+        }
+    }
+    if (ans == cAns[qnNo - 1])
+    {
+        cout << "\nCorrect Answer!" << endl;
+        system("pause");
+        i = 1;
+    }
+    else
+    {
+        cout << "\nSorry wrong Answer!" << endl;
+        system("pause");
+        i = 0;
+    }
+    inFile.close();
+
+    system("CLS");
+    return i;
 }
 
 // Write return to game menu
