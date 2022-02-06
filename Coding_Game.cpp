@@ -719,7 +719,11 @@ void timer_Quiz(int r)
             }
         }
 
-        if (decision == decisions[0]) finished = false;
+        if (decision == decisions[0]) 
+        {
+            timer_Quiz(r);
+            finished = false;
+        }
         else if (decision == decisions[1])
         {
             finished = true;
