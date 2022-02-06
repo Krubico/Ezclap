@@ -112,7 +112,7 @@ void signin()
     if (authorised) 
     {
         cout << "Welcome back " << username << endl;
-        current_username == username;
+        current_username = username;
         displaygameMenu();
     }
     else 
@@ -157,7 +157,7 @@ void signup()
     if (authorised) 
     {
         cout << "Welcome  " << username << endl;
-        current_username == username;
+        current_username = username;
         displaygameMenu();
     }
     creds_file.close();
@@ -469,7 +469,8 @@ Points logged
 int writescore(string filename, int points)
 {
 	string current_username, line, data_username, data_score, points_string;
-	fstream inFile;
+	ifstream inFile;
+    ofstream inFile1;
     int score;
     map<string, int> lb;
 	inFile.open("scores.txt", ios::app);
@@ -490,13 +491,13 @@ int writescore(string filename, int points)
         }
         inFile.close();
     }
-    inFile.open("scores.txt", ios::out);
+    inFile1.open("scores.txt", ios::out);
 
     for (auto const& x: lb ) 
     {
-        inFile << x.first << ' ' << x.second << endl;
+        inFile1 << x.first << ' ' << x.second << endl;
     }
-    inFile.close();
+    inFile1.close();
     return 0;
 }
 
