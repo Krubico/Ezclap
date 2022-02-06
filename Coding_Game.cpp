@@ -581,7 +581,10 @@ void normal_Quiz()
             }
         }
 
-        if (decision == decisions[0]) finished = false;
+        if (decision == decisions[0])
+	{
+	     normal_quiz();
+	}
         else if (decision == decisions[1])
         {
             finished = true;
