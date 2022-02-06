@@ -20,7 +20,7 @@ void run(int a, char x);
 int question(int qnNo);
 void timer_Quiz(int r );
 void normal_Quiz();
-int writescore(int points);
+int writescore(string filename, int points);
 int admin_menu();
 int admin_signin();
 int playersearch();
@@ -32,7 +32,7 @@ int display_leaderboard(int a);
 
 void edit_leaderboard() {}
 
-string current_username, leaderboard_filename = "normal.txt";
+string current_username;
 
 int main() {
     display_mainmenu();
@@ -174,7 +174,7 @@ int playersearch()
     ifstream leaderboard_file;
     bool found;
     int option;
-    leaderboard_file.open(leaderboard_filename);
+    leaderboard_file.open("scores.txt");
     cout << "Enter in players name: ";
     cin >> playername;
     if (leaderboard_file.is_open()) 
@@ -224,7 +224,7 @@ int playersearch()
 // {
 //     string playername;
 //     ifstream leaderboard_file;
-//     leaderboard_file.open(leaderboard_filename);
+//     leaderboard_file.open(scores_file);
 //     cout << "Enter in player name to edit: ";
 //     cin >> playername;
 //     if (leaderboard_file.is_open()) 
@@ -283,34 +283,34 @@ void filter_byscore() {
     vector<string> good;
     vector<string> passed;
     double student_GPA;
-    student_file.open(leaderboard_filename);
+    student_file.open("scores.txt");
     cout << "Perfect" << setw(15) << "Excellent" << setw(15) << "Good" << setw(15) << "Passed" << endl;
     while (getline(student_file, leaderboard_line)) 
     {
         student_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
         student_score = stoi(leaderboard_line.substr((leaderboard_line.find(' ')+1)));
         // TODO: Student ranges to be determined
-            if (inRange(10, 10, student_score)) 
+            if (inRange(20, 20, student_score)) 
             {
                 perfect.push_back(student_username);
                 rank = "Perfect";
             }
                 
-            else if (inRange(8, 9, student_score)) 
+            else if (inRange(19, 16, student_score)) 
             {
                 excellent.push_back(student_username);
-                rank = "Excellent";
+                rank = "Great";
             }
-            else if (inRange(5, 7, student_score))
+            else if (inRange(15, 10, student_score))
             {
                 good.push_back(student_username);
-                rank = "Good";
-            }
-            else if (inRange(0, 5, student_score)) 
-            {
-                passed.push_back(student_username);
                 rank = "Passed";
             }
+            else if (inRange(9, 0,student_score)) 
+            {
+                passed.push_back(student_username);
+                rank = "Failed";
+            } 
         }
         for (int i = 0; i < 30; i++) 
         {
@@ -466,48 +466,51 @@ void run(int a, char x)
 Return to Game Menu
 Points logged
 */
-// int writescore(int points)
-// {
-// 	string current_username, line, data_username, data_score, points_string;
-// 	ofstream inFile;
-//     int score;
-// 	inFile.open("scores.txt", ios::trunc);
-// 	if (inFile.is_open()) 
-// 	{
-//         while (getline(inFile, line))
-//         {
-//             data_username = line.substr(0, line.find(' '));
-//             data_score = line.substr(line.find(' ')+1);
-//             score = stoi(data_score);
-//             cout << data_username << score;
-//             if (current_username == data_username)
-//             {
-//                 if (points > score) 
-//                 {
-//                     cout << "ASSSHITTTT";
-//                     points_string = to_string(points);
-//                     line = line.replace(line.find(' ')+1, points_string.length(), points_string);
-//                     return 0;
-//                 } else return 0;
-//             } 
-//         inFile << current_username << " " << points;
-//         }
-//     }
-//     inFile.close();
-//     return 0;
-// }
-
-void writescores(string filename, int points)
+int writescore(string filename, int points)
 {
-	string username;
+	string current_username, line, data_username, data_score, points_string;
 	fstream inFile;
-	inFile.open(filename, ios::app);
+    int score;
+    map<string, int> lb;
+	inFile.open("scores.txt", ios::app);
 	if (inFile.is_open()) 
 	{
-		inFile << username << "	" << points << endl;
-		inFile.close();
-	}
+        while (getline(inFile, line))
+        {
+            data_username = line.substr(0, line.find(' '));
+            data_score = line.substr(line.find(' ')+1);
+            score = stoi(data_score);
+            if (current_username == data_username)
+            {
+                if (points > score) 
+                {
+                    lb[data_username] = points;
+                } else lb[data_username] = score;
+            } else lb[data_username] = score;
+        }
+        inFile.close();
+    }
+    inFile.open("scores.txt", ios::out);
+
+    for (auto const& x: lb ) 
+    {
+        inFile << x.first << ' ' << x.second << endl;
+    }
+    inFile.close();
+    return 0;
 }
+
+// void writescores(string filename, int points)
+// {
+// 	string username;
+// 	fstream inFile;
+// 	inFile.open(filename, ios::out);
+// 	if (inFile.is_open()) 
+// 	{
+// 		inFile << username << "	" << points << endl;
+// 		inFile.close();
+// 	}
+// }
 
 
 void normal_Quiz()
@@ -560,7 +563,7 @@ void normal_Quiz()
         else if (sum >= 10 && sum <= 14) cout << "Good Try.Can be better!\n";
         else if (sum >= 0 && sum <= 9) cout << "You need more Practice!\n";
 
-        writescores("scores.txt", sum);
+        writescore("scores.txt", sum);
 
         cout << "If you would like to try again press v. However if you wish to end press x.";
         cin >> decision;
@@ -811,13 +814,13 @@ int display_leaderboard(int a) {
 	if (a == 2) {
 		cin >> x;
 		if (x == 's') {
-			lbfile.open("simple timer.txt");
+			lbfile.open("simpletimer.txt");
 		}
 		else if (x == 'h') {
-			lbfile.open("hard timer.txt");
+			lbfile.open("hardtimer.txt");
 		}
 		else if (x == 'e') {
-			lbfile.open("expert timer.txt");
+			lbfile.open("experttimer.txt");
 		}
 	}
     cout << "Hall Of Fame (NORMAL)" << endl;
@@ -847,7 +850,6 @@ int display_leaderboard(int a) {
 
 void sort_lb(map<string, int>& lb)
 {
-
 	// Declare vector of pairs
 	vector<pair<string, int> > A;
 	cout << left << fixed << setprecision(2);
