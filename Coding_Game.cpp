@@ -2,13 +2,14 @@
 #include<fstream>
 #include<iomanip>
 #include<iostream>
+#include<vector>
 #include<string>
 #include <ctime>
 #include<windows.h>
 using namespace std;
 
 
-void display_mainmenu(); 
+int display_mainmenu(); 
 void signin();
 void signup();
 void display_leaderboard();
@@ -18,6 +19,17 @@ int question(int qnNo);
 void timer_Quiz(int r );
 void normal_Quiz();
 void Displayscores();
+int admin_menu();
+int admin_signin();
+int playersearch();
+void edit_leaderboard();
+void filter_byscore();
+int findLastIndex(string& str, char x);
+bool inRange(unsigned low, unsigned high, unsigned x);
+
+void edit_leaderboard() {}
+
+string current_username, leaderboard_filename = "leaderboard.txt";
 
 int main() {
     display_mainmenu();
@@ -25,29 +37,55 @@ int main() {
 }
 
 
-//To Add More Dependcies
-// Checking for appropriate username
-void display_mainmenu() 
+int display_mainmenu() 
 {
     int choice;
-    cout << "------------" << "\n" 
-    << "Greetings, user!" << "\n" 
-    << "------------" << endl;
-    cout << "Would you like to sign in or sign up?" << "\n" << "1 to sign in 2 to sign up" << "\n" << "Enter choice: ";
+    cout << "------------" << "\n" << "Greetings, user!" << "\n" << "------------" << endl;
+    cout << "1. Sign in" << endl;
+    cout << "2. Sign up" << endl;
+    cout << "3. Admin Sign in" << endl;
+    // cout << "5. Sort students' marks" << endl;
+    cout << "4. Exit Program" << endl;
+    cout << "Enter option here: ";
     cin >> choice;
     switch (choice) 
     {
     break; case 1: signin();
     break; case 2: signup();
+    break; case 3: admin_signin();
+    break; case 4: return 0;
+    default:
+    {
+        cout << "Incorrect choice input, please try again" << endl; 
+        display_mainmenu();
+    } 
     }
+    return 0;
 }
 
 
-//     cout << "2. Search for player name" << endl;
-//     cout << "3. Create/edit text file" << endl;
-//     cout << "4. Filter scores" << endl;
+int admin_menu() 
+{
+    int option;
+    cout << "*****************************" << "\n" 
+    << "* WELCOME TO STUDENT PROFILE ORGANISER *" 
+    << "\n" << "*****************************" << endl;
+    cout << "1. Search for player name" << endl;
+    cout << "2. Create/edit player file" << endl;
+    cout << "3. Filter player scores" << endl;
+    cout << "4. Exit Program" << endl;
+    cout << "Enter option here: ";
+    cin >> option;
 
-// Creds file has to be in format line1: username password
+    switch (option) 
+    {
+        break; case 1: playersearch();
+        break; case 2: edit_leaderboard();
+        break; case 3: filter_byscore();
+        break; case 4: return 0;
+    }
+    return 0;
+}
 void signin() 
 {
     string username, password, data_username, data_password, user_creds_line;
@@ -63,8 +101,8 @@ void signin()
     {
         while (getline(creds_file, user_creds_line)) {
             data_username = user_creds_line.substr(0, user_creds_line.find(' '));
-            data_password = user_creds_line.substr((0, user_creds_line.find(' ')+1));
-            if ((data_username == username) && data_password == password) {authorised = true; break;}
+            data_password = user_creds_line.substr(user_creds_line.find(' ')+1);
+            if ((stoi(data_username) == hash<std::string>{}(username)) && stoi(data_password) == hash<std::string>{}(password)) {authorised = true; break;}
             else {authorised = false; continue;}
         }
     } else cout << "creds file not found" << endl;
@@ -93,60 +131,111 @@ void signup()
     string username, password;
     ofstream creds_file;
     bool authorised;
+    creds_file.open("creds.txt", fstream::app);
     cout << "Enter new username: ";
     cin >> username;
     cout << "Enter new password: ";
     cin >> password;
-    creds_file.open("creds.txt", fstream::app);
+    if (username.find(' ') != -1 || password.find(' ') != -1) 
+    {
+        cout << "No Spaces are allowed in username or password" << endl;
+        creds_file.close();
+        signup();
+    }
     if (creds_file.is_open())
     {
         if (username.find(' ')) {}
-        creds_file << "\n" << username << " " << password << endl;
+        creds_file << hash<std::string>{}(username) << " " << hash<std::string>{}(password) << endl;
     }
     cout << "Username and password saved!" << endl;
     authorised = true;
     
     if (authorised) 
     {
-        cout << "Welcome back " << username << endl;
+        cout << "Welcome  " << username << endl;
         displaygameMenu();
     }
     creds_file.close();
 }
 
-// void search_name() {
-//     string student_name;
-//     auto student_info_line;
-//     ifstream student_file;
-//     student_file.open("");
-//     cout << "Enter name of search for: ";
-//     cin >> student_name;
-//     if (student_file.isOpen())
-//     {
-//         while (getline(student_file, student_info_line)) 
-//     {
-//         student_info_list = student_info.erase(' ');
-//         student_info_list.split(',');
-//         if (student_info_list[0] == student_name) {break;}
-//         else { continue }
-//     }
-//     }
-//     student_file.close("");
+bool inRange(unsigned low, unsigned high, unsigned x)        
+{        
+ return (low <= x && x <= high);         
+}
 
-// }
+int playersearch() 
+{
+    string playername, leaderboard_line, data_username, data_score;
+    ifstream leaderboard_file;
+    bool found;
+    int option;
+    leaderboard_file.open(leaderboard_filename);
+    cout << "Enter in players name: ";
+    cin >> playername;
+    if (leaderboard_file.is_open()) 
+    {
+        while (getline(leaderboard_file, leaderboard_line)) {
+            data_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
+            data_score = leaderboard_line.substr(leaderboard_line.find(' ')+1);
+            // if ((stoi(data_username) == hash<std::string>{}(playername))) {found = true; break;}
+            if (data_username == playername) {found = true; break;}
+            else found = false;
+        }
+    } else {
+        cout << "leaderboard file not found" << endl;
+        playersearch();
+        system("pause");
+        return 0;
+    }
+    if (found) 
+    {
+        cout << "The student " << playername <<  " has gotten a high score of " << data_score << endl;
+    } else cout << "The student you player you specified cannot be found " << endl;
+    
+        cout << "1. Enter another player name " << endl;
+        cout << "2. Return to menu " << endl;
+        cout << "Enter you choice: ";
+        cin >> option;
+        switch(option) 
+        {
+            break; case 1:
+            {
+                playersearch();
+                system("pause");
+                return 0;
+            }
+            break; case 2: 
+            {
+                admin_menu(); 
+                system("pause");
+                return 0;
+            }
+        }
+    system("pause");
+    return 0;
+}
 
-// void edit_file() {
-//     char edit_choice;
-//     string file_name;
-//     cout << "Do you wish to create or edit a file?(c/e}: ";
-//     cin >> edit_choice;
-//     cout << "Enter the name of the file you want to edit (___.txt): " << endl;
-//     switch (edit_choice) 
+// void edit_leaderboard() 
+// {
+//     string playername;
+//     ifstream leaderboard_file;
+//     leaderboard_file.open(leaderboard_filename);
+//     cout << "Enter in player name to edit: ";
+//     cin >> playername;
+//     if (leaderboard_file.is_open()) 
 //     {
-//         case e {edit(file_name);}
-//         case c {create();}
+//         while (getline(leaderboard_file, leaderboard_line)) {
+//             data_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
+//             data_score = leaderboard_line.substr(leaderboard_line.find(' ')+1);
+//             if ((data_username == hash<std::string>{}(playername))) {found = true; break;}
+//             else found = false;
+//         }
+//     } else {
+//         cout << "leaderboard file not found" << endl;
+//         edit_leaderboard()
+//         system("pause");
+//         return 0;
 //     }
-
 // }
 
 // void edit(string file_name) {
@@ -163,65 +252,114 @@ void signup()
 //     for (i = 1; i <= num_of_students; i++) 
 //     {
 //         cout << "Adding new record:" << endl;
-//         cout << "Enter Admission number: ";
-//         cin >> admin_num;
-//         cout << "Enter students' name: ";
+//         cout << "Enter Students' name: ";
 //         cin << student_name;
-//         cout << "Enter module code: "
+//         cout << "Enter Admin Number: "
 //         cin << chosen_module_code;
 //         cout << "Enter the score";
 //         cin >> new_student_score;
 //         // exit halfway code
-//         if ()
+//         if (admin_num == '/') 
+//         {
+//             cout << "Record Saved!" << endl;
+//             break;
+//         }
 //         cout << "Record Saved!" << endl;
 //     }
 
 // }
 
-// void sort_marks() {
-//     //Come up with a better name than vec
-//     string student_name, subject_code;
-//     auto student_score_line;
-//     ifstream student_file;
-//     vector<int> vec;
-//     cout << "Enter a subject code to sort the marks: ";
-//     cin >> subject_code;
-//     struct Predicate {
-//         bool operator()(const A first, const A second) 
-//         {
-//             return first.num < second.num;
-//         }
-//     }
-//     if student_file.isOpen() 
-//     {
-//         while (getline(student_file, student_score_line)) 
-//         {
-//             if (student_score_line[] == subject_code)
-//             student_score = student_score_line[]
-//         }
-//     }
-//     sort(vec.begin(), vec.end(), Predicate())
-    
+void filter_byscore() {
+    int i, student_score;
+    ifstream student_file;
+    string student_username, rank, leaderboard_line;
+    vector<string> perfect;
+    vector<string> excellent;
+    vector<string> good;
+    vector<string> passed;
+    double student_GPA;
+    student_file.open(leaderboard_filename);
+    cout << "Perfect" << setw(15) << "Excellent" << setw(15) << "Good" << setw(15) << "Passed" << endl;
+    while (getline(student_file, leaderboard_line)) 
+    {
+        student_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
+        student_score = stoi(leaderboard_line.substr((leaderboard_line.find(' ')+1)));
+        // TODO: Student ranges to be determined
+            if (inRange(10, 10, student_score)) 
+            {
+                perfect.push_back(student_username);
+                rank = "Perfect";
+            }
+                
+            else if (inRange(8, 9, student_score)) 
+            {
+                excellent.push_back(student_username);
+                rank = "Excellent";
+            }
+            else if (inRange(5, 7, student_score))
+            {
+                good.push_back(student_username);
+                rank = "Good";
+            }
+            else if (inRange(0, 5, student_score)) 
+            {
+                passed.push_back(student_username);
+                rank = "Passed";
+            }
+        }
+        for (int i = 0; i < 30; i++) 
+        {
+            if (i < perfect.size()) cout << perfect[i];
+            if (i < excellent.size()) cout << setw(15) << excellent[i];
+            if (i < good.size()) cout << setw(15) << good[i];
+            if (i < passed.size()) cout << setw(15) << passed[i];
+            cout << endl;
+        }
+    student_file.close();
+}
 
-// }
-
-// void exit() {
-//     cout << "Shutting down" << endl;
-// }
-
-// void filter_display() {
-//     int choice;
-//     string module_code;
-//     cout << "Filter a group of students based on " << endl;
-//     cout << " 1. GPA" << "\n" << " 2. Modules" << endl;
-//     cout << " Enter your choice: " << endl;
-//     cin >> choice;
-//     switch (choice) 
-//     {
-//         case 1 {filter_GPAs();}
-//         case 2 {filter_modules();}
-//     }
-// }
+int admin_signin()
+{
+    string username, password, data_username, data_password, user_creds_line;
+    char choice;
+    bool authorised;
+    cout << "Enter username: ";
+    cin >> username;
+    cout << "Enter password: ";
+    cin >> password;
+    ifstream admincreds_file;
+    admincreds_file.open("admincreds.txt", fstream::out);
+    if (admincreds_file.is_open())
+    {
+        while (getline(admincreds_file, user_creds_line)) {
+            data_username = user_creds_line.substr(0, user_creds_line.find(' '));
+            data_password = user_creds_line.substr((user_creds_line.find(' ')+1));
+            if ((stoi(data_username) == hash<std::string>{}(username)) && stoi(data_password) == hash<std::string>{}(password)) {authorised = true; break;}
+            else {authorised = false; continue;}
+        }
+    } else cout << "creds file not found" << endl;
+    if (authorised) 
+    {
+        cout << "Welcome back " << username << endl;
+        admin_menu();
+    }
+    else 
+    {
+        cout << "Incorrect username or password" << endl;
+        cout << "Would you like to return back to menu or try again?" << endl;
+        cout << "1. Return back to Menu " << endl;
+        cout << "2. Try Again " << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        switch (choice) 
+        {
+            break; case 1: {display_mainmenu(); return 0;}
+            break; case 2: admin_signin();
+        }
+    }
+    admincreds_file.close();
+    return 0;
+}
 
 char displaygameMenu()
 {
