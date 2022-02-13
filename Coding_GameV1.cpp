@@ -93,7 +93,7 @@ void signin();
 void signup();
 void displaygameMenu();
 void run(int a, char x);
-int question(int qnNo);
+int questionDisplay(int qnNo);
 void timer_Quiz(int r );
 void normal_Quiz();
 int writescore(string filename, int points);
@@ -106,17 +106,12 @@ bool inRange(unsigned low, unsigned high, unsigned x);
 int display_leaderboard(int a);
 void ren(int a);
 void sort_lb(map<string, int>& lb);
-char selectdifficulty();
-char highscoredifficulty();
-char highscorechoice();
-
+int personal_highscore();
 
 
 string current_username;
 
-char selectdifficulty() {}
-char highscoredifficulty() {}
-char highscorechoice() {}
+
 
 
 int main() {
@@ -305,59 +300,6 @@ int playersearch()
     return 0;
 }
 
-// void edit_leaderboard() 
-// {
-//     string playername;
-//     ifstream leaderboard_file;
-//     leaderboard_file.open(scores_file);
-//     cout << "Enter in player name to edit: ";
-//     cin >> playername;
-//     if (leaderboard_file.is_open()) 
-//     {
-//         while (getline(leaderboard_file, leaderboard_line)) {
-//             data_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
-//             data_score = leaderboard_line.substr(leaderboard_line.find(' ')+1);
-//             if ((data_username == hash<std::string>{}(playername))) {found = true; break;}
-//             else found = false;
-//         }
-//     } else {
-//         cout << "leaderboard file not found" << endl;
-//         edit_leaderboard()
-//         system("pause");
-//         return 0;
-//     }
-// }
-
-// void edit(string file_name) {
-//     ofstream student_file;
-//     int admin_num;
-//     string student_name, chosen_module_code, new_student_score;
-//     cout << "Enter number of students: ";
-//     cin >> num_of_students;
-//     student_file.open("");
-//     if (student_file.isOpen()) 
-//     {
-//         while ()
-//     }
-//     for (i = 1; i <= num_of_students; i++) 
-//     {
-//         cout << "Adding new record:" << endl;
-//         cout << "Enter Students' name: ";
-//         cin << student_name;
-//         cout << "Enter Admin Number: "
-//         cin << chosen_module_code;
-//         cout << "Enter the score";
-//         cin >> new_student_score;
-//         // exit halfway code
-//         if (admin_num == '/') 
-//         {
-//             cout << "Record Saved!" << endl;
-//             break;
-//         }
-//         cout << "Record Saved!" << endl;
-//     }
-
-// }
 
 void filter_byscore() {
     int i, student_score;
@@ -474,7 +416,7 @@ int admin_signin()
 
 void displaygameMenu()
 {
-    int b[4] = { 1, 2, 3, 4 };
+    int b[5] = { 1, 2, 3, 4, 5 };
     int a;
     char y[3] = { 's', 'h', 'e' };
     char x=' ';
@@ -490,7 +432,8 @@ void displaygameMenu()
     cout << setw(19) << "Options\n";
     cout << "------------------------------\n";
     cout << "3. Highscores" << endl;
-    cout << "4. Return To Login" << endl;
+    cout << "4. Personal Highscore" << endl;
+    cout << "5. Return To Login" << endl;
     cout << "------------------------------\n"<<endl;
     cout << "Ans: ";
     cin >> a;
@@ -500,6 +443,7 @@ void displaygameMenu()
         else if (a == b[1]) checkOne = true;
         else if (a == b[2]) checkOne = true;
         else if (a == b[3]) checkOne = true;
+        else if (a == b[4]) checkOne = true;
         else
         {
             cout << "Invalid option. Please enter again." << endl;
@@ -513,9 +457,9 @@ void displaygameMenu()
         cout << "------------------------------------------------------------\n";
         cout << setw(35) << "Pick Difficulty\n";
         cout << "------------------------------------------------------------\n";
-        cout << "s. Simple (Complete 10 Questions in 5 Minutes)\n";
-        cout << "h. Hard (Complete 15 Questions in 5 Minutes)\n";
-        cout << "e. Expert(Complete 20 Questions in 5 Minutes)\n";
+        cout << "s. Simple Mode (Complete 10 Questions in 5 Minutes)\n";
+        cout << "h. Hard Mode (Complete 15 Questions in 5 Minutes)\n";
+        cout << "e. Expert Mode (Complete 20 Questions in 5 Minutes)\n";
         cout << "------------------------------------------------------------\n"<<endl;
         cout << "Ans: ";
         cin >> x;
@@ -553,17 +497,21 @@ void run(int a, char x)
     }
     else if (a == 3)
     {
+        personal_highscore();
+    }
+    else if (a == 4)
+    {
         system("CLS");
         cout << "Highscore Menu!" << endl;
         cout << "1. Normal " << endl;
-        cout << "2. Easy " << endl;
+        cout << "2. Simple " << endl;
         cout << "3. Hard " << endl;
         cout << "4. Expert " << endl;
         cout << "Enter your choice: ";
         cin >> choice;
         display_leaderboard(choice);
     }
-    else if (a == 4)
+    else if (a == 5)
     {
         system("CLS");
         display_mainmenu();
@@ -595,7 +543,7 @@ void normal_Quiz()
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = question(qnNo);
+                        i = questionDisplay(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -692,7 +640,7 @@ void timer_Quiz(int r)
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = question(qnNo);
+                        i = questionDisplay(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -797,7 +745,7 @@ void timer_Quiz(int r)
 }
 
 
-int question(int qnNo)
+int questionDisplay(int qnNo)
 {
     fstream inFile;
     string qn;
@@ -851,14 +799,18 @@ int question(int qnNo)
     }
     if (ans == cAns[qnNo - 1])
     {
+        system("color 02");    
         cout << "\nCorrect Answer!" << endl;
         system("pause");
+        system("color 07");
         i = 1;
     }
     else
     {
+        system("color 04");    
         cout << "\nSorry wrong Answer!" << endl;
         system("pause");
+        system("color 07");
         i = 0;
     }
     inFile.close();
@@ -917,6 +869,8 @@ int display_leaderboard(int a) {
 
 void sort_lb(map<string, int>& lb)
 {
+    string first;
+    int second;
 	// Declare vector of pairs
 	vector<pair<string, int> > A;
 
@@ -933,8 +887,9 @@ void sort_lb(map<string, int>& lb)
 	lb = map<string, int>(A.begin(), A.end());
 	// Print the sorted value
 	for (auto& it : A) {
-
-		cout << setw(15) << it.first
+        first = it.first;
+        second = it.second;
+		cout << it.first << setw(15-first.length())
 			<< it.second << endl;
 	}
 }
@@ -975,3 +930,40 @@ int writescore(string filename, int points)
 }
 
 
+int personal_highscore()
+{
+    int op;
+	string username, score, current_username;
+	int userscore = 0;
+	fstream inFile;
+    cout << "Highscore Menu!" << endl;
+    cout << "1. Normal " << endl;
+    cout << "2. Easy " << endl;
+    cout << "3. Hard " << endl;
+    cout << "4. Expert " << endl;
+    cout << "Enter your choice: ";
+	cin >> op;
+	if (op == 1) {
+		inFile.open("normal.txt");
+	}
+    else if (op = 2) inFile.open("simpletimer.txt");
+    else if (op = 3) inFile.open("hardtimer.txt");
+    else if (op = 4) inFile.open("experttimer.txt");
+	void sort_lb(map<string, int>&lb);
+	map<string, int> lb;
+	if (inFile.is_open()) {
+		while (!inFile.eof()) {
+			inFile >> username >> score;
+			if (username == current_username)
+				userscore = stoi(score);
+			cout << "Personal Highscore!" << endl;
+			cout << userscore << endl;
+			break;
+		}
+	}
+	inFile.close();
+	sort_lb(lb);
+
+	system("pause");
+	return 0;
+}
