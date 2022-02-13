@@ -1,0 +1,9 @@
+﻿  Coding_GameV1.cpp
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(351,49): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(357,50): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(363,50): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(310,12): warning C4101: 'student_GPA': unreferenced local variable
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(303,9): warning C4101: 'i': unreferenced local variable
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(572,34): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Krubics JH\C++Project\TEST1\Ezclap-main\Coding_GameV1.cpp(605,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Final.vcxproj -> C:\Users\Krubics JH\source\repos\Final\x64\Debug\Final.exe

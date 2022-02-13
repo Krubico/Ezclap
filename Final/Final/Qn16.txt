@@ -1,0 +1,9 @@
+The following function prototype is placed in front of int main().  
+
+         void drawALine(int n);
+
+Which of the following function invocations are correct?
+
+A. drawALine(int n);            B. int n=10; drawALine(n);
+
+C. void drawALine(10)           D. int n=10; drawALine(int n);

@@ -1,0 +1,5 @@
+Which of the following C++ assignment statement computes y, given y = ln(10)?
+
+A. y=log10(10);            B. y=ln(10);
+
+C. y=log(10);              D. y=log10;

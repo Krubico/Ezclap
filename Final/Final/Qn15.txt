@@ -1,0 +1,5 @@
+Which of the following return type indicates that the function does not return a value?
+
+A. null            B. int
+
+C. void            D. default

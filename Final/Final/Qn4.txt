@@ -1,0 +1,9 @@
+What is the output of the following program segment?
+
+double x;
+x = 9/4*2;
+cout<<x;
+
+A. 4            B. 1.125
+
+C. 1            D. 4.5
