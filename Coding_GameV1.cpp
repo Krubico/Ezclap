@@ -486,9 +486,9 @@ void displaygameMenu()
         cout << "------------------------------------------------------------\n";
         cout << setw(35) << "Pick Difficulty\n";
         cout << "------------------------------------------------------------\n";
-        cout << "s. simple (Complete 10 Questions in 5 Minutes)\n";
-        cout << "h. Hard (Complete 15 Questions in 5 Minutes)\n";
-        cout << "e. Expert(Complete 20 Questions in 5 Minutes)\n";
+        cout << "s. Simple Mode (Complete 10 Questions in 5 Minutes)\n";
+        cout << "h. Hard  Mode (Complete 15 Questions in 5 Minutes)\n";
+        cout << "e. Expert Mode (Complete 20 Questions in 5 Minutes)\n";
         cout << "------------------------------------------------------------\n"<<endl;
         cout << "Ans: ";
         cin >> x;
@@ -529,7 +529,7 @@ void run(int a, char x)
         system("CLS");
         cout << "Highscore Menu!" << endl;
         cout << "1. Normal " << endl;
-        cout << "2. Easy " << endl;
+        cout << "2. Simple " << endl;
         cout << "3. Hard " << endl;
         cout << "4. Expert " << endl;
         cout << "Enter your choice: ";
