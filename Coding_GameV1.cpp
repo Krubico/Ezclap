@@ -80,8 +80,14 @@ Default admin password: password
         3. Exit Program - End Program 
 
     Advanced Function: 
-    1. All usernames and passwords are hashed in sign_up() before entering the creds.txt file
-    2. sort.lb() takes keys and values from the normal leaderboard/scores.txt file and sorts the values of the dictionary.
+        1. All usernames and passwords are hashed in sign_up() before entering the creds.txt file
+        2. sort.lb() takes keys and values from the normal leaderboard/scores.txt file and sorts the values of the dictionary.
+    
+    personal_Highscore:
+        Type ‘1’ to choose option "Normal". 
+        Type ‘2’ to choose option "Simple".
+        Type ‘3’  to choose option "Hard".
+        Type ‘4’  to choose option "Expert".
 
 
 
@@ -936,9 +942,9 @@ int personal_highscore()
 	string username, score, current_username;
 	int userscore = 0;
 	fstream inFile;
-    cout << "Highscore Menu!" << endl;
+    cout << "Personal Highscore Menu!" << endl;
     cout << "1. Normal " << endl;
-    cout << "2. Easy " << endl;
+    cout << "2. Simple " << endl;
     cout << "3. Hard " << endl;
     cout << "4. Expert " << endl;
     cout << "Enter your choice: ";
