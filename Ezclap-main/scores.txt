@@ -1,4 +1,0 @@
-normal 20
-username 10
-student 10
-name 16

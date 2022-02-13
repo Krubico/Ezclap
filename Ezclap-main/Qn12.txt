@@ -1,5 +1,0 @@
-Which of the following for loop is correct?
-
-A. for(int i=1, i<=5, i++)            B. for(int i; i<=5; i++)
-
-C. for(int i=1; i<=5; i++)            D. for(int i=1; i<=5; i++;)

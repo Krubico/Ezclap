@@ -1,6 +1,0 @@
-Which of the following while clauses allows program to read data repeatedly from text
-file, until it reaches the End Of File?
-
-A. while(EOF())            B. while(inFile.EOF())
-
-C. while(!inFile.EOF())    D. while(!EOF)

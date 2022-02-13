@@ -1,5 +1,0 @@
-How to display the value stored in the third array element?
-
-A. cout<<myArray(2);            B. cout<<myArray[2];
-
-C. cout<<myArray[3];            D. cout<<myArray(3);

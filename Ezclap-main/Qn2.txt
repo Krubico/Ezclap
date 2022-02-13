@@ -1,5 +1,0 @@
-Which of the following variable declaration and initialization is valid?
-
-A. char gender="F";            B. string grade='A+';
-
-C. double height=1.7m;         D. double height=1.7;

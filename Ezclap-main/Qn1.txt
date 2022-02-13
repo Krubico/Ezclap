@@ -1,6 +1,0 @@
-Which of the following variable declaration is invalid?
-
-A. int a; int b;            B. int a; b;
-
-C. int a;                   D. int a, b;
-   int b;
