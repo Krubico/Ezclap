@@ -15,58 +15,85 @@ using namespace std;
 
 /*
 User Guide:
+Default username: username 
+Default password: password
+Default admin username: username 
+Default admin password: password
+
     Main Menu:
     1. Sign in - Log on to your player account
-    2. Sign up - Create new account
-    3. Admin Sign in - Access the adminisation page for teachers to access scores of students
+    2. Sign up - Create a new account
+    3. Admin Sign in - Access the administration page for teachers to access scores of students
     4. Exit Program - End Program
 
     Sign in:
-        username: - Enter your username
-        password: - Enter your password
+        Enter Username: - Enter your username: Default username: username
+        Enter password: - Enter your password: Default password: password
     Sign up:
-        username - Create your username
-        password - Create your password
+        Enter username - Create your username
+        Enter a password - Create your password 
 
     Sign in & Sign up -> Game Menu
-    Game Menu: 
-        1. Normal Quiz - Start Teacher Assigned Quiz
-        2. Timer Quiz - Start Timed Quiz
-        Options: 
-        3. Highscores -Display the leaderboard of scores
-        4. Return to Main Menu
-    
-    Timer Quiz:
-        1. Normal - Start teacher-assigned quiz
-        2. Easy - Start simple mode practice quiz
-        3. Hard - Start hard mode practice quiz
-        4. Expert -Start expert mode practice quiz
 
-    Highscores:  
-        1. Normal - Display normal leaderboard
-        2. Easy - Display simple mode leaderboard
-        3. Hard - Display hard mode leaderboard
-        4. Expert - Display expert mode leaderboard
-    
+    Game Menu/displaygameMenu(): (prompts user to select 4 options)
+        1. Normal Quiz 
+        2. Timer Quiz
+        3. Highscores
+        4. Return To Login
 
+       If the selected option is ”Timer Quiz”, you will be prompted to select the 
+       difficulty level of the Timer Quiz.
+
+       Type ‘s’ to choose option “Simple Mode (Complete 10 Questions in 5 Minutes)”.
+       Type ‘h’ to choose option “Hard  Mode (Complete 10 Questions in 5 Minutes)”.
+       Type ‘e’ to choose option “Expert Mode (Complete 10 Questions in 5 Minutes)”.
+
+ 
+    Normal Quiz/normal_Quiz(): (Runs the normal quiz)
+        Option ‘v’ is to restart the quiz.
+        Option ‘x’ is to return to the game menu.
+
+    Timer Quiz/timer_Quiz(): (Runs the timer quiz with difficulty level chosen in displaygameMenu function)
+        Option ‘v’ is to restart the quiz.
+        Option ‘x’ is to return to the game menu.
+
+    questionDisplay(): (Opens an individual question text file, with 1 question and 4 answers.)
+        Type ‘a’ to choose option ‘A’. 
+        Type ‘b’ to choose option ‘B’.
+        Type ‘c’  to choose option ‘C’.
+        Type ‘d’  to choose option ‘D’.
+
+    Highscores/run():  
+        1. Normal - Display normal quiz leaderboard
+        2. Simple - Display simple mode quiz leaderboard
+        3. Hard - Display hard mode quiz  leaderboard
+        4. Expert - Display expert mode quiz  leaderboard
+  
     Admin Sign in:
-        username: - Enter your admin username
-        password: - Enter your admin password
+        Enter Username: - Enter your admin username, Default username: username
+        Enter Password: - Enter your admin password, Default password: password
     
     Admin Sign in -> Admin Menu
     Admin Menu:
-        1. Search for player name - Search for a plPayer and display their teacher-assigned quiz score
-        2. Filter player scores - Organise students score 
+        1. Search for player name - Search for a player and display their Normal quiz score
+        2. Filter player scores - Organise students score for the Normal Quiz from Perfect 20, Great 19-16, Passed 15-10, Failed 9-0
         3. Exit Program - End Program 
-    
+
+    Advanced Function: 
+    1. All usernames and passwords are hashed in sign_up() before entering the creds.txt file
+    2. sort.lb() takes keys and values from the normal leaderboard/scores.txt file and sorts the values of the dictionary.
+
+
+
 */
+
 
 int display_mainmenu(); 
 void signin();
 void signup();
 void displaygameMenu();
 void run(int a, char x);
-int questionDisplay(int qnNo);
+int question(int qnNo);
 void timer_Quiz(int r );
 void normal_Quiz();
 int writescore(string filename, int points);
@@ -486,9 +513,9 @@ void displaygameMenu()
         cout << "------------------------------------------------------------\n";
         cout << setw(35) << "Pick Difficulty\n";
         cout << "------------------------------------------------------------\n";
-        cout << "s. Simple Mode (Complete 10 Questions in 5 Minutes)\n";
-        cout << "h. Hard  Mode (Complete 15 Questions in 5 Minutes)\n";
-        cout << "e. Expert Mode (Complete 20 Questions in 5 Minutes)\n";
+        cout << "s. Simple (Complete 10 Questions in 5 Minutes)\n";
+        cout << "h. Hard (Complete 15 Questions in 5 Minutes)\n";
+        cout << "e. Expert(Complete 20 Questions in 5 Minutes)\n";
         cout << "------------------------------------------------------------\n"<<endl;
         cout << "Ans: ";
         cin >> x;
@@ -529,7 +556,7 @@ void run(int a, char x)
         system("CLS");
         cout << "Highscore Menu!" << endl;
         cout << "1. Normal " << endl;
-        cout << "2. Simple " << endl;
+        cout << "2. Easy " << endl;
         cout << "3. Hard " << endl;
         cout << "4. Expert " << endl;
         cout << "Enter your choice: ";
@@ -568,7 +595,7 @@ void normal_Quiz()
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = questionDisplay(qnNo);
+                        i = question(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -665,7 +692,7 @@ void timer_Quiz(int r)
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = questionDisplay(qnNo);
+                        i = question(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -770,7 +797,7 @@ void timer_Quiz(int r)
 }
 
 
-int questionDisplay(int qnNo)
+int question(int qnNo)
 {
     fstream inFile;
     string qn;
@@ -824,18 +851,14 @@ int questionDisplay(int qnNo)
     }
     if (ans == cAns[qnNo - 1])
     {
-	system("color 02");    
         cout << "\nCorrect Answer!" << endl;
         system("pause");
-	system("color 07");
         i = 1;
     }
     else
     {
-	system("color 04");    
         cout << "\nSorry wrong Answer!" << endl;
         system("pause");
-	system("color 07");
         i = 0;
     }
     inFile.close();
@@ -941,7 +964,7 @@ int writescore(string filename, int points)
         }
         inFile.close();
     }
-    inFile1.open("scores.txt", ios::out);
+    inFile1.open(filename, ios::out);
 
     for (auto const& x: lb ) 
     {
