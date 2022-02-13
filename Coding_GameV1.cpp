@@ -10,8 +10,56 @@
 #include<iterator>
 #include<algorithm>
 #include<sstream>
+#include<mmsystem.h>
 using namespace std;
 
+/*
+User Guide:
+    Main Menu:
+    1. Sign in - Log on to your player account
+    2. Sign up - Create new account
+    3. Admin Sign in - Access the adminisation page for teachers to access scores of students
+    4. Exit Program - End Program
+
+    Sign in:
+        username: - Enter your username
+        password: - Enter your password
+    Sign up:
+        username - Create your username
+        password - Create your password
+
+    Sign in & Sign up -> Game Menu
+    Game Menu: 
+        1. Normal Quiz - Start Teacher Assigned Quiz
+        2. Timer Quiz - Start Timed Quiz
+        Options: 
+        3. Highscores -Display the leaderboard of scores
+        4. Return to Main Menu
+    
+    Timer Quiz:
+        1. Normal - Start teacher-assigned quiz
+        2. Easy - Start simple mode practice quiz
+        3. Hard - Start hard mode practice quiz
+        4. Expert -Start expert mode practice quiz
+
+    Highscores:  
+        1. Normal - Display normal leaderboard
+        2. Easy - Display simple mode leaderboard
+        3. Hard - Display hard mode leaderboard
+        4. Expert - Display expert mode leaderboard
+    
+
+    Admin Sign in:
+        username: - Enter your admin username
+        password: - Enter your admin password
+    
+    Admin Sign in -> Admin Menu
+    Admin Menu:
+        1. Search for player name - Search for a plPayer and display their teacher-assigned quiz score
+        2. Filter player scores - Organise students score 
+        3. Exit Program - End Program 
+    
+*/
 
 int display_mainmenu(); 
 void signin();
@@ -30,11 +78,22 @@ int findLastIndex(string& str, char x);
 bool inRange(unsigned low, unsigned high, unsigned x);
 int display_leaderboard(int a);
 void ren(int a);
+void sort_lb(map<string, int>& lb);
+char selectdifficulty();
+char highscoredifficulty();
+char highscorechoice();
+
 
 
 string current_username;
 
+char selectdifficulty() {}
+char highscoredifficulty() {}
+char highscorechoice() {}
+
+
 int main() {
+
     display_mainmenu();
     return 0;
 }
@@ -69,10 +128,11 @@ int display_mainmenu()
 
 int admin_menu() 
 {
+    system("CLS");
     int option;
-    cout << "*****************************" << "\n" 
+    cout << "*********************************" << "\n" 
     << "* WELCOME TO STUDENT PROFILE ORGANISER *" 
-    << "\n" << "*****************************" << endl;
+    << "\n" << "*********************************" << endl;
     cout << "1. Search for player name" << endl;
     cout << "2. Filter player scores" << endl;
     cout << "3. Exit Program" << endl;
@@ -277,54 +337,75 @@ void filter_byscore() {
     ifstream student_file;
     string student_username, rank, leaderboard_line;
     vector<string> perfect;
-    vector<string> excellent;
-    vector<string> good;
+    vector<string> great;
     vector<string> passed;
+    vector<string> failed;
     double student_GPA;
     student_file.open("scores.txt");
-    cout << "Perfect" << setw(15) << "Excellent" << setw(15) << "Good" << setw(15) << "Passed" << endl;
+    cout << "Perfect" << setw(15) << "Great" << setw(15) << "Passed" << setw(15) <<  "Failed" << endl;
     while (getline(student_file, leaderboard_line)) 
     {
         student_username = leaderboard_line.substr(0, leaderboard_line.find(' '));
         student_score = stoi(leaderboard_line.substr((leaderboard_line.find(' ')+1)));
         // TODO: Student ranges to be determined
-            if (inRange(20, 20, student_score)) 
+            if (student_score == 20) 
             {
                 perfect.push_back(student_username);
-                rank = "Perfect";
+                
             }
                 
-            else if (inRange(19, 16, student_score)) 
+            else if (inRange(16, 19, student_score)) 
             {
-                excellent.push_back(student_username);
-                rank = "Great";
+                great.push_back(student_username);
+                
             }
-            else if (inRange(15, 10, student_score))
-            {
-                good.push_back(student_username);
-                rank = "Passed";
-            }
-            else if (inRange(9, 0,student_score)) 
+            else if (inRange(10, 15, student_score))
             {
                 passed.push_back(student_username);
-                rank = "Failed";
+                
+            }
+            else if (inRange(0, 9, student_score))
+            {
+                failed.push_back(student_username);
+                
             } 
         }
+        int x = 15;
         for (int i = 0; i < 30; i++) 
         {
-            if (i < perfect.size()) cout << perfect[i];
-            if (i < excellent.size()) cout << setw(15) << excellent[i];
-            if (i < good.size()) cout << setw(15) << good[i];
-            if (i < passed.size()) cout << setw(15) << passed[i];
+            if (i < perfect.size()) 
+            {
+                cout << perfect[i];
+            }
+            else x += 7;
+            if (i < great.size()) 
+            {
+                cout << setw(x) << great[i]; 
+                x = 15 - (great[i].length() - 5);
+            }
+            else x += 20;
+            if (i < passed.size()) 
+            {
+                cout << setw(x) << passed[i]; 
+                x = 15 - (passed[i].length() - 6);
+            }
+            else x += 21;
+            if (i < failed.size()) 
+            {
+                cout << setw(x) << failed[i]; 
+                x = 15 - (failed[i].length() - 6);
+            }
             cout << endl;
+            x = 15;
         }
+        
     student_file.close();
 }
 
 int admin_signin()
 {
     string username, password, data_username, data_password, user_creds_line;
-    char choice;
+    int choice;
     bool authorised;
     cout << "Enter username: ";
     cin >> username;
@@ -356,7 +437,7 @@ int admin_signin()
         cin >> choice;
         switch (choice) 
         {
-            break; case 1: {display_mainmenu(); return 0;}
+            break; case 1: display_mainmenu(); return 0;
             break; case 2: admin_signin();
         }
     }
@@ -458,7 +539,7 @@ void run(int a, char x)
     else if (a == 4)
     {
         system("CLS");
-        cout << "Return To Lobby?" << endl;
+        display_mainmenu();
     }
 }
 
@@ -811,7 +892,6 @@ void sort_lb(map<string, int>& lb)
 {
 	// Declare vector of pairs
 	vector<pair<string, int> > A;
-	cout << left << fixed << setprecision(2);
 
 	// Copy key-value pair from Map
 	// to vector of pairs
@@ -839,7 +919,7 @@ int writescore(string filename, int points)
     ofstream inFile1;
     int score;
     map<string, int> lb;
-	inFile.open("scores.txt", ios::app);
+	inFile.open(filename, ios::app);
 	if (inFile.is_open()) 
 	{
         while (getline(inFile, line))
