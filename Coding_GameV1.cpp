@@ -19,50 +19,42 @@ Default username: username
 Default password: password
 Default admin username: username 
 Default admin password: password
-
     Main Menu:
     1. Sign in - Log on to your player account
     2. Sign up - Create a new account
     3. Admin Sign in - Access the administration page for teachers to access scores of students
     4. Exit Program - End Program
-
     Sign in:
         Enter Username: - Enter your username: Default username: username
         Enter password: - Enter your password: Default password: password
     Sign up:
         Enter username - Create your username
         Enter a password - Create your password 
-
     Sign in & Sign up -> Game Menu
+    Game Menu/displaygameMenu(): (prompts user to select 5 options)
+        1. Normal Quiz - Start Normal Quiz
+        2. Timer Quiz - Go to Timer Quiz Menu
+        3. Highscores - Go to Leaderboard Menu
+        4. Personal Highscore - Go to Personal Highscore Menu
+        5. Return To Login - Return to login page
 
-    Game Menu/displaygameMenu(): (prompts user to select 4 options)
-        1. Normal Quiz 
-        2. Timer Quiz
-        3. Highscores
-        4. Return To Login
-
-       If the selected option is ”Timer Quiz”, you will be prompted to select the 
+    If the selected option is ”Timer Quiz”, you will be prompted to select the 
        difficulty level of the Timer Quiz.
-
        Type ‘s’ to choose option “Simple Mode (Complete 10 Questions in 5 Minutes)”.
-       Type ‘h’ to choose option “Hard  Mode (Complete 10 Questions in 5 Minutes)”.
+       Type ‘h’ to choose option “Hard Mode (Complete 10 Questions in 5 Minutes)”.
        Type ‘e’ to choose option “Expert Mode (Complete 10 Questions in 5 Minutes)”.
-
  
-    Normal Quiz/normal_Quiz(): (Runs the normal quiz)
+    Normal Quiz/normal_Quiz(): (Runs the normal quiz (20 Questions with no time limit))
         Option ‘v’ is to restart the quiz.
         Option ‘x’ is to return to the game menu.
-
     Timer Quiz/timer_Quiz(): (Runs the timer quiz with difficulty level chosen in displaygameMenu function)
         Option ‘v’ is to restart the quiz.
         Option ‘x’ is to return to the game menu.
-
     questionDisplay(): (Opens an individual question text file, with 1 question and 4 answers.)
         Type ‘a’ to choose option ‘A’. 
         Type ‘b’ to choose option ‘B’.
         Type ‘c’  to choose option ‘C’.
         Type ‘d’  to choose option ‘D’.
-
     Highscores/run():  
         1. Normal - Display normal quiz leaderboard
         2. Simple - Display simple mode quiz leaderboard
@@ -78,7 +70,6 @@ Default admin password: password
         1. Search for player name - Search for a player and display their Normal quiz score
         2. Filter player scores - Organise students score for the Normal Quiz from Perfect 20, Great 19-16, Passed 15-10, Failed 9-0
         3. Exit Program - End Program 
-
     Advanced Function: 
         1. All usernames and passwords are hashed in sign_up() before entering the creds.txt file
         2. sort.lb() takes keys and values from the normal leaderboard/scores.txt file and sorts the values of the dictionary.
@@ -88,9 +79,6 @@ Default admin password: password
         Type ‘2’ to choose option "Simple".
         Type ‘3’  to choose option "Hard".
         Type ‘4’  to choose option "Expert".
-
-
-
 */
 
 
