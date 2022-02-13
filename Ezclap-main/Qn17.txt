@@ -1,0 +1,13 @@
+_______ getChoice()
+{
+         int choice;
+         cout<<"Please enter your choice, 1 or 2: ";
+         cin >>choice;
+         return choice;
+}
+
+Which of the following is the correct return type of the function?
+
+A. null            B. int
+
+C. void            D. char

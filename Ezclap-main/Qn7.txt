@@ -1,0 +1,5 @@
+Which of the following generates a number between 5 and 10?
+
+A. rand()%6+5;            B. rand()%6+10;
+
+C. rand()%10+5;           D. rand()%5+5;

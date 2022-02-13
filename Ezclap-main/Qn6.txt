@@ -1,0 +1,8 @@
+What is the output of the following program segment?
+
+y=1.567;
+cout<<right<<setw(10)<<fixed<<setprecision(2)<<y;
+
+A.         1.57    B. 1.57
+
+C. 1.56            D. 1.567

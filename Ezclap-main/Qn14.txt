@@ -1,0 +1,5 @@
+Which of the following is NOT an element to implement User Defined Functions?
+
+A. Function Prototype            B. Function Removal
+
+C. Function Invocation           D. Function Definition
