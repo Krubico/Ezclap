@@ -1,0 +1,5 @@
+Which of the following is NOT a relational operator in C++?
+
+A. !=            B. =
+
+C. <             D. >=

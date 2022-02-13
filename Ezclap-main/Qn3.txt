@@ -1,0 +1,9 @@
+What is the output of the following program segment?
+
+int c;
+c= 9/4-1;
+cout<<c;
+
+A. 2            B. 1
+
+C. 0            D. 3
