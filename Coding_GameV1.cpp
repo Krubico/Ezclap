@@ -66,7 +66,7 @@ void signin();
 void signup();
 void displaygameMenu();
 void run(int a, char x);
-int question(int qnNo);
+int questionDisplay(int qnNo);
 void timer_Quiz(int r );
 void normal_Quiz();
 int writescore(string filename, int points);
@@ -568,7 +568,7 @@ void normal_Quiz()
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = question(qnNo);
+                        i = questionDisplay(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -665,7 +665,7 @@ void timer_Quiz(int r)
                     if (qnNo == k && counter[k - 1] == 0)
                     {
                         cout << "Qn" << j + 1 << ")" << endl;
-                        i = question(qnNo);
+                        i = questionDisplay(qnNo);
                         sum += i;
                         counter[k - 1]++;
                         found = true;
@@ -770,7 +770,7 @@ void timer_Quiz(int r)
 }
 
 
-int question(int qnNo)
+int questionDisplay(int qnNo)
 {
     fstream inFile;
     string qn;
@@ -824,14 +824,18 @@ int question(int qnNo)
     }
     if (ans == cAns[qnNo - 1])
     {
+	system("color 02");    
         cout << "\nCorrect Answer!" << endl;
         system("pause");
+	system("color 07");
         i = 1;
     }
     else
     {
+	system("color 04");    
         cout << "\nSorry wrong Answer!" << endl;
         system("pause");
+	system("color 07");
         i = 0;
     }
     inFile.close();
